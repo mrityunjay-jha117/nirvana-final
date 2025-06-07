@@ -8,51 +8,6 @@ import { motion } from "framer-motion"; // Add this import
 
 export default function Home() {
   const navigate = useNavigate();
-  const images = [
-    {
-      image: "/images/images4k/20.jpg",
-      title: "Whispers Beyond the Hills",
-      description:
-        "Gentle hills roll into the distance, bathed in golden light. A timeless landscape where silence speaks and stories unfold on the breeze.",
-    },
-    {
-      image: "/images/images4k/2.jpg",
-      title: "Echoes of Edo",
-      description:
-        "Step into the soul of Japan’s past—ancient architecture, quiet courtyards, and the subtle beauty of tradition alive in every frame.",
-    },
-    {
-      image: "/images/images4k/3.jpg",
-      title: "Fury of the Tiger",
-      description:
-        "A fierce predator in mid-motion—power, grace, and wild instinct collide. This is the jungle’s true ruler, captured in its element.",
-    },
-    {
-      image: "/images/images4k/4.jpg",
-      title: "Traditions Beneath the Sakura",
-      description:
-        "From kimonos to lantern-lit streets, every detail whispers of heritage. A poetic glimpse into the timeless rituals of Japanese life.",
-    },
-    {
-      image: "/images/images4k/7.jpg",
-      title: "Blades of the Forgotten Warriors",
-      description:
-        "Witness the ancient art of Kalaripayattu—fluid, deadly, and mesmerizing. A dance of discipline and steel passed down through generations.",
-    },
-    {
-      image: "/images/images4k/8.jpg",
-      title: "Snowbound Silence",
-      description:
-        "A world wrapped in white where sound disappears and beauty stands still. The untouched stillness of snow-kissed peaks is truly humbling.",
-    },
-    {
-      image: "/images/images4k/17.jpg",
-      title: "Mystic Mornings at Ganga Ghat",
-      description:
-        "Mist rises from sacred waters as chants echo through the dawn. Ganga Ghat pulses with life, faith, and ancient spiritual rhythm.",
-    },
-  ];
-
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#1a0002] to-[#0d1418]">
       <Header />

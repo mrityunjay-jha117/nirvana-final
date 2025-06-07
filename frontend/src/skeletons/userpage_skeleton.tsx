@@ -1,6 +1,4 @@
 import TypingEffect from "../components/primary_components/primary_components/unique_components/word_typing_animate";
-import Header from "../components/primary_components/dashboard/header";
-
 interface HimeSkeletonProps {
   variant?: number; // optional prop, 0 by default
 }
