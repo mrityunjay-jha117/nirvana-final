@@ -9,7 +9,7 @@ import { motion } from "framer-motion"; // Add this import
 export default function Home() {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#1a0002] to-[#0d1418]">
+    <div className="relative flex flex-col min-h-screen bg-gradient-to-b from-[#1a0002] to-[#0d1418]">
       <Header />
 
       <main className="flex-grow">

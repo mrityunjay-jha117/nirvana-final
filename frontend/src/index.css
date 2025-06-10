@@ -20,31 +20,6 @@ body {
   display: none; /* Chrome, Safari, Opera */
 }
 
-/* Transparent scrollbar (if needed for smooth look without total hide) */
-.transparent-scrollbar {
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: transparent transparent;
-}
-
-.transparent-scrollbar::-webkit-scrollbar {
-  width: 8px;
-  background: transparent;
-}
-
-.transparent-scrollbar::-webkit-scrollbar-thumb {
-  background-color: transparent;
-}
-@layer utilities {
-  /* Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-}
 @keyframes shine {
   0% {
     background-position: 200% center;

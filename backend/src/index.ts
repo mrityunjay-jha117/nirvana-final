@@ -4,6 +4,8 @@ import { Hono } from "hono";
 import userRouter from "./routes/author";
 import blogRouter from "./routes/blog";
 import imageRouter from "./routes/image";
+import messageRouter from "./routes/message";
+import geminiRouter from "./routes/gemini";
 import { cors } from "hono/cors";
 
 const app = new Hono<{
@@ -26,6 +28,8 @@ app.use(
 app.route("/api/v1/user", userRouter);
 app.route("/api/v1/blog", blogRouter);
 app.route("/api/v1/image", imageRouter);
+app.route("/api/v1/message", messageRouter);
+app.route("/api/v1/gemini", geminiRouter);
 app.get("/", (c) => {
   return c.html(`
     <html>

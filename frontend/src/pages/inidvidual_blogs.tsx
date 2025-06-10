@@ -15,7 +15,7 @@ export default function Blogi() {
 
   // Inside your Blogi function component (below the `const [error, setError] = useState(false);`)
   // const [likeMessage, setLikeMessage] = useState<string | null>(null);
-// console.log(likeMessage);
+  // console.log(likeMessage);
   // Add this function in Blogi
   // const handleLike = async () => {
   //   const token = localStorage.getItem("jwt");
@@ -71,7 +71,7 @@ export default function Blogi() {
   return (
     <div className="bg-gradient-to-b from-[#e9ddd0] to-[#d4c3b3] min-h-screen flex flex-col">
       <Header />
-
+      
       {loading ? (
         <div className="flex-grow">
           <HimeSkeleton />

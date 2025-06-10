@@ -59,7 +59,7 @@ export default function SideScrollindesk() {
   return (
     <aside
       ref={sidebarRef}
-      className="sticky top-16 right-0 pb-30 scrollbar-hide lg:flex whitespace-nowrap cursor-grab lg:flex-col flex-shrink-0 w-full overflow-y-auto active:cursor-grabbing bg-black text-white p-4 gap-2 "
+      className="sticky top-16 right-0 pb-30  lg:flex whitespace-nowrap cursor-grab lg:flex-col flex-shrink-0 w-full overflow-y-auto active:cursor-grabbing bg-black text-white p-4 gap-2 "
     >
       <h1 className="text-4xl lg:text-5xl xl:text-7xl font-extrabold text-left tracking-wide">
         Search
@@ -100,7 +100,7 @@ export default function SideScrollindesk() {
 
         <button
           type="submit"
-          className="p-2 w-full h-10 rounded-full mt-2 text-sm text-white tracking-wide 
+          className="p-2 w-full h-9 rounded-full mt-2 text-sm text-white tracking-wide 
              bg-green-600 cursor-pointer border-4 border-green-600 overflow-hidden relative flex items-center 
              justify-center group transition-all duration-500"
         >
@@ -118,7 +118,7 @@ export default function SideScrollindesk() {
         blogs.map((blog) => (
           <div
             key={blog.id}
-            className="relative h-50  flex flex-col justify-end   p-4 text-white bg-cover bg-center rounded-2xl shadow-xl transition-transform transform hover:scale-[1.02] hover:shadow-lg cursor-pointer"
+            className="relative h-50 flex flex-col justify-end p-4 text-white bg-cover bg-center rounded-2xl shadow-xl transition-transform transform hover:scale-[1.02] hover:shadow-lg cursor-pointer"
             style={{
               backgroundImage: `url(${blog.blogHead})`,
             }}

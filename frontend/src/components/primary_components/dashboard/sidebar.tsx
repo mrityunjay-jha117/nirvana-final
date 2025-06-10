@@ -40,7 +40,7 @@ export default function Sidebar() {
           fixed top-0 left-0 h-screen bg-[#0f0e0e] text-white z-40 
           transition-transform duration-300 
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          w-60 sm:w-56 lg:w-64
+          w-60 sm:w-56 lg:w-70
         `}
       >
         <div className="pt-25 flex flex-col h-4/5 justify-between ">

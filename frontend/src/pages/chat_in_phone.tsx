@@ -1,23 +1,21 @@
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import TypingEffect from "../components/primary_components/primary_components/unique_components/word_typing_animate";
-type Message = { text: string; isBot: boolean; loading?: boolean };
+import ResponsiveParticleCanvas from "../../unused/animations/responsivewindow";
+type Message = { text: string; isBot: boolean; loading?: boolean; time?: any };
 
-export default function Chat() {
+export default function Chatin() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Fetch chat history on mount
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         const res = await fetch(
           "https://backend.mrityunjay-jha2005.workers.dev/api/v1/message/chat/all",
           {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-            },
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
           }
         );
 
@@ -26,10 +24,9 @@ export default function Chat() {
           const loadedMessages = data.chats.map((chat: any) => ({
             text: chat.message,
             isBot: chat.isBot,
+            time: chat.createdAt,
           }));
           setMessages(loadedMessages);
-        } else {
-          console.error("Failed to fetch chats:", data.error);
         }
       } catch (error) {
         console.error("Error fetching chats:", error);
@@ -39,7 +36,6 @@ export default function Chat() {
     fetchMessages();
   }, []);
 
-  // Scroll to bottom on new message
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -61,7 +57,6 @@ export default function Chat() {
     try {
       const jwt = localStorage.getItem("jwt");
 
-      // Step 1: Save user message
       await fetch("https://backend.mrityunjay-jha2005.workers.dev/api/v1/message/chat/add", {
         method: "POST",
         headers: {
@@ -71,9 +66,8 @@ export default function Chat() {
         body: JSON.stringify({ message: messageToSend, isBot: false }),
       });
 
-      // Step 2: Call Gemini API with the user prompt
       const geminiRes = await fetch(
-        `https://backend.mrityunjay-jha2005.workers.dev/api/v1/gemini/generate`, // your Gemini proxy route
+        "https://backend.mrityunjay-jha2005.workers.dev/api/v1/gemini/generate",       
         {
           method: "POST",
           headers: {
@@ -87,8 +81,7 @@ export default function Chat() {
       const geminiData = await geminiRes.json();
       const botResponse = geminiData?.response ?? "No response";
 
-      // Step 3: Save Gemini bot response
-      await fetch("https://backend.mrityunjay-jha2005.workers.dev/api/v1/message/chat/add", {
+      await fetch("https://backend.mrityunjay-jha2005.workers.dev/message/chat/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +90,6 @@ export default function Chat() {
         body: JSON.stringify({ message: botResponse, isBot: true }),
       });
 
-      // Step 4: Replace "Typing..." with actual bot response
       setMessages((prev) => [
         ...prev.slice(0, -1),
         { text: botResponse, isBot: true },
@@ -108,48 +100,42 @@ export default function Chat() {
   };
 
   return (
-    <motion.div
-      className="absolute bottom-0 right-0 sm:bottom-2 sm:right-4 lg:bottom-6 lg:right-6 w-full h-[100vh] sm:w-1/3 md:w-80  xl:w-1/4 h-[60vh] sm:h-[70vh] flex flex-col rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-2xl "
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1.0, ease: "easeOut" }}
-    >
-      {/* Header */}
-      <motion.div className="h-1/7 bg-[#333446] flex items-center px-5">
-        <div className="flex items-center gap-3">
-          <div className="w-5 h-5 sm:w-10 sm:h-10 bg-white rounded-full flex items-center justify-center shadow-inner"></div>
-          <span className="text-white text-sm sm:text-lg font-semibold tracking-wide">
-            Chat Assistant
-          </span>
-        </div>
-      </motion.div>
-
-      {/* Messages */}
-      <div className="h-5/7 p-1 sm:p-4 overflow-y-auto bg-[#7F8CAA] scrollbar-hide space-y-3">
-        {messages.map((msg, index) => (
-          <InViewMessage key={index} message={msg} />
-        ))}
-        <div ref={scrollRef} />
+    <div className="flex flex-row">
+      <div className="sm:w-1/5 bg-black h-screen ">
+        <ResponsiveParticleCanvas />
       </div>
+      <div className=" w-full ml-auto bg-black h-screen flex flex-col bg-[#f1f1f1]">
+        <div className="  text-sm sm:text-8xl h-30 bg-black text-white px-4 flex items-center justify-start font-bold text-base shadow-md">
+          Chat-Bot
+        </div>
 
-      {/* Input */}
-      <motion.div className="h-1/7  p-2 bg-white">
-        <div className="flex flex-row items-center space-x-2">
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto px-3 sm:px-10 py-2 space-y-2 sm:space-y-4 bg-[#e9ddd0] scrollbar-hide">
+          {messages.map((msg, index) => (
+            <InViewMessage key={index} message={msg} />
+          ))}
+          <div ref={scrollRef} />
+        </div>
+
+        {/* Input */}
+        <div className="px-3 py-8 bg-black border-t flex items-center gap-2 sticky bottom-0">
           <input
             type="text"
-            placeholder="Type your message..."
+            className="flex-grow rounded-lg px-4 py-2 text-sm bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400 shadow-inner"
+            placeholder="Type a message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="w-4/5 text-[10px] rounded-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-shadow shadow-inner"
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
           />
           <button
             onClick={handleSend}
-            className="w-1/5 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 transition-all shadow-md text-white "
-          ></button>
+            className="bg-green-400 text-white rounded-lg px-4 py-2 text-sm font-semibold shadow-md hover:bg-gray-800 transition-all"
+          >
+            Send
+          </button>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -160,32 +146,48 @@ function InViewMessage({ message }: { message: Message }) {
     margin: "0px 0px -40px 0px",
   });
 
+  const formatTime = (iso: string | undefined) => {
+    if (!iso) return "";
+    const date = new Date(iso);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const formattedTime = `${hours % 12 || 12}:${minutes
+      .toString()
+      .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`;
+    return formattedTime;
+  };
+
   return (
     <motion.div
       ref={ref}
+      initial={{ opacity: 0, y: 80 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.4 }}
       className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      transition={{ duration: 0.5 }}
     >
       <div
-        className={`max-w-[75%] text-[8px] sm:text-xs rounded-2xl px-4 py-2 shadow transition-transform duration-300 hover:scale-[1.02] ${
+        className={`max-w-[80%] sm:max-w-[40%] px-4 py-2 rounded-xl shadow-md text-xs ${
           message.isBot
-            ? "bg-[#333446] text-white rounded-bl-none"
-            : "bg-[#B8CFCE] text-black rounded-br-none"
+            ? "bg-gray-700 text-[#F1EFEC] rounded-bl-none"
+            : "bg-blue-500 text-white rounded-br-none"
         }`}
       >
-        {message.loading ? (
-          <div className="">
+        <div className="whitespace-pre-wrap">
+          {message.loading ? (
             <TypingEffect
-              color="text-white"
+              color={"text-white"}
               typingSpeed={400}
-              wordsize="text-[13px] sm:text-2xl text-white tracking-widest"
+              wordsize="text-sm tracking-widest"
               texts={["........"]}
             />
+          ) : (
+            message.text
+          )}
+        </div>
+        {!message.loading && message.time && (
+          <div className="text-[10px] text-gray-300 mt-1 text-right">
+            {formatTime(message.time)}
           </div>
-        ) : (
-          message.text
         )}
       </div>
     </motion.div>

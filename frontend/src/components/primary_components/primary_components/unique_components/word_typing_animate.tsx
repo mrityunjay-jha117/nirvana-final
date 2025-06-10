@@ -80,7 +80,8 @@ const TypingEffect: React.FC<AnimatedTextSequenceProps> = ({
   }, [phase, fadeDuration, texts.length]);
 
   return (
-    <div className="h-full p-2 w-full">
+    // <div className="h-full p-2 w-full">
+    <div className="h-full  w-full">
       <div className={`${color} break-normal whitespace-pre-wrap  w-full max-w-full`}>
         {Array.from(currentText).map((char, index) => {
           if (index >= currentCharIndex) return <span key={index}></span>;

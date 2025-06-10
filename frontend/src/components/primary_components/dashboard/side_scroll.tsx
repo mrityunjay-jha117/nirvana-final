@@ -103,7 +103,7 @@ export default function SideScroll() {
           transition-all duration-400
           ${isOpenMobile ? "max-h-screen" : "max-h-0"}
           lg:max-h-none lg:overflow-visible
-          overflow-hidden
+          overflow-hidden 
         `}
       >
         {/* Search Form */}

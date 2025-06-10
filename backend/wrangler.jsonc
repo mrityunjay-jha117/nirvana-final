@@ -9,8 +9,10 @@
     "JWT_SECRET": "placeholder",
     "CLOUDINARY_CLOUD_NAME": "placeholder",
     "CLOUDINARY_API_KEY": "placeholder",
+    "GEMINI_API":"placeholder",
     "CLOUDINARY_API_SECRET": "placeholder"
   }
+
   // "kv_namespaces": [
   //   {
   //     "binding": "MY_KV_NAMESPACE",
