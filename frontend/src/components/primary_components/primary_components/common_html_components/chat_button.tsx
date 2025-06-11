@@ -26,7 +26,7 @@ export default function Chatbutton() {
   return (
     <>
       <motion.div
-        className="hidden sm:block fixed bottom-10 right-4 sm:right-10 z-30"
+        className=" fixed bottom-10 right-4 sm:right-10 z-30"
         animate={{ scale: [1, 1.1, 1] }}
         transition={{
           repeat: Infinity,

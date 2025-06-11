@@ -109,7 +109,7 @@ export default function Chat() {
 
   return (
     <motion.div
-      className="absolute bottom-0 right-0 sm:bottom-2 sm:right-4 lg:bottom-6 lg:right-6 w-full h-[100vh] sm:w-1/3 md:w-80  xl:w-1/4 h-[60vh] sm:h-[70vh] flex flex-col rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-2xl "
+      className="absolute bottom-0 right-0 sm:bottom-2 sm:right-4 lg:bottom-6 lg:right-6 w-3/4 h-[80vh] sm:w-1/3 md:w-80  xl:w-1/4 h-[60vh] sm:h-[70vh] flex flex-col rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-2xl "
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1.0, ease: "easeOut" }}
