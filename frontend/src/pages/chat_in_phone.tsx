@@ -81,7 +81,7 @@ export default function Chatin() {
       const geminiData = await geminiRes.json();
       const botResponse = geminiData?.response ?? "No response";
 
-      await fetch("https://backend.mrityunjay-jha2005.workers.dev/message/chat/add", {
+      await fetch("https://backend.mrityunjay-jha2005.workers.dev/api/v1/message/chat/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
