@@ -55,11 +55,11 @@ export function AppContent() {
     "/images/carousel_images/20.jpg",
   ];
   const location = useLocation();
-  const hideChatButtonOnRoutes = ["/", "/window","/chat"];
+  const hideChatButtonOnRoutes = ["/", "/window", "/chat"];
   const shouldShowChatButton = !hideChatButtonOnRoutes.includes(
     location.pathname
   );
-   return (
+  return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
       <ScrollToTop />
@@ -144,7 +144,6 @@ export function AppContent() {
     </>
   );
 }
-
 
 export default function App() {
   return (
