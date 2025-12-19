@@ -4,14 +4,9 @@
   "main": "src/index.ts",
   "compatibility_date": "2025-06-05",
   "compatibility_flags": ["nodejs_compat"],
-  "vars": {
-    "DATABASE_URL": "placeholder",
-    "JWT_SECRET": "placeholder",
-    "CLOUDINARY_CLOUD_NAME": "placeholder",
-    "CLOUDINARY_API_KEY": "placeholder",
-    "GEMINI_API":"placeholder",
-    "CLOUDINARY_API_SECRET": "placeholder"
-  }
+  // ...............................................
+  //add the keys here
+  
   // "kv_namespaces": [
   //   {
   //     "binding": "MY_KV_NAMESPACE",
