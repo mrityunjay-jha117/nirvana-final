@@ -1,0 +1,8 @@
+.vscode
+node_modules
+apikeys.docx
+.env
+dist
+.wrangler
+migrations
+backend/wrangler.jsonc

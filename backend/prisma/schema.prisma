@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Author {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?  @default("mrityunjay")
+  image     String?  @default("image.com")
+  password  String
+  about     String?  @default("lorem ipsum dolor")
+  blogs     Blog[]
+  chats     Chat[]   // ⬅️ New relation
+
+  @@index([name])
+  @@index([id])
+}
+
+model Blog {
+  id           String    @id @default(uuid())
+  blogHead     String
+  title        String
+  description1 String
+  description2 String
+  images       String[]
+  likes        Int       @default(0)
+  footerImage  String?
+
+  author     Author   @relation(fields: [authorId], references: [id])
+  authorId   String
+
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId String
+
+  @@index([title])
+}
+
+model Location {
+  id       String  @id @default(uuid())
+  city     String
+  country  String
+  blogs    Blog[]
+
+  @@unique([city, country])
+  @@index([city])
+  @@index([country])
+}
+
+model Chat {
+  id        String   @id @default(uuid())
+  message   String
+  isBot     Boolean
+  createdAt DateTime @default(now()) // Standard field to track message creation time
+
+  author    Author   @relation(fields: [authorId], references: [id])
+  authorId  String
+
+  @@index([authorId])
+  @@index([createdAt])
+}
+
