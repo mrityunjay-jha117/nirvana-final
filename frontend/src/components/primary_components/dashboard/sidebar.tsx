@@ -32,7 +32,7 @@ export default function Sidebar() {
           alt="logo"
           className="w-10 h-10 cursor-pointer"
           onClick={() => {
-            navigate("/home");
+            navigate("/");
           }}
         />
       </div>
