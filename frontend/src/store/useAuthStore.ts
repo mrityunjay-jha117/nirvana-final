@@ -3,7 +3,10 @@ import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { io, Socket } from "socket.io-client";
 
-const BASE_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5001";
+const isDevelopment = import.meta.env.MODE === "development";
+const BASE_URL = isDevelopment
+  ? import.meta.env.VITE_SOCKET_URL_DEV
+  : import.meta.env.VITE_SOCKET_URL_PROD || "http://localhost:5001";
 
 export interface AuthUser {
   _id: string;
