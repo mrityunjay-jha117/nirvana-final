@@ -5,4 +5,7 @@ apikeys.docx
 dist
 .wrangler
 migrations
+api keys.txt
 backend/wrangler.jsonc
+.env.development
+.env.production
