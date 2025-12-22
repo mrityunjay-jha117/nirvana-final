@@ -140,17 +140,18 @@ export default function Sidebar() {
             className={`
               transform transition-all duration-300 ease-in-out
               flex items-center justify-center h-14 text-sm sm:text-xs
-              rounded-lg hover:bg-white/10 hover:translate-x-4
+              rounded-lg hover:bg-white/10 hover:translate-x-4 cursor-pointer
               ${
                 isOpen
                   ? "translate-x-0 opacity-100"
                   : "-translate-x-52 opacity-0"
               }
             `}
-            onClick={() => {
+            onClick={async () => {
+              await logout();
               localStorage.removeItem("jwt");
+              setIsOpen(false);
               navigate("/");
-              logout();
             }}
           >
             LOGOUT

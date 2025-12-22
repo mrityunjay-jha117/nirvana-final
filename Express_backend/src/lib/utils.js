@@ -10,6 +10,7 @@ export const generateToken = (userId, res) => {
     httpOnly: true, // prevent XSS attacks cross-site scripting attacks
     sameSite: "none", // Allow cross-site cookies for different domains
     secure: true, // Required when sameSite is "none"
+    path: "/", // Explicitly set path
   });
 
   return token;
