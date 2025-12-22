@@ -18,16 +18,38 @@ const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: [
+
+// CORS configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
       "http://localhost:5173",
       "https://nirvana-final-delta.vercel.app",
-      "https://snowcapped-touchily-shanon.ngrok-free.dev",
-    ],
-    credentials: true,
-  })
-);
+    ];
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow all origins for ngrok testing
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Cookie",
+    "ngrok-skip-browser-warning",
+  ],
+  exposedHeaders: ["Set-Cookie"],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight requests explicitly
+app.options("*", cors(corsOptions));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
