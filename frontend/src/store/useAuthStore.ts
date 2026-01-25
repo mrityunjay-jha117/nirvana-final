@@ -111,6 +111,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       query: {
         userId: authUser.email,
       },
+      extraHeaders: {
+        "ngrok-skip-browser-warning": "true",
+      },
     });
     socket.connect();
 
