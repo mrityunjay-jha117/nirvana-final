@@ -1,6 +1,5 @@
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import TypingEffect from "../components/primary_components/primary_components/unique_components/word_typing_animate";
 type Message = { text: string; isBot: boolean; loading?: boolean };
 
 export default function Chat() {
