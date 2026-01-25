@@ -128,6 +128,18 @@ export default function Blog_creation() {
     [formData, navigate],
   );
 
+  const handleKeyDown = (e: React.KeyboardEvent, nextId?: string) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (nextId) {
+        document.getElementById(nextId)?.focus();
+      } else {
+        // If no next ID, try to submit
+        document.getElementById("create-submit-btn")?.click();
+      }
+    }
+  };
+
   return (
     <div className="p-4 max-w-3xl mx-auto text-xs">
       <div className="py-2 max-w-3xl">
@@ -173,24 +185,30 @@ export default function Blog_creation() {
         </div>
 
         <input
+          id="create-title"
           name="title"
           value={formData.title}
           onChange={handleChange}
+          onKeyDown={(e) => handleKeyDown(e, "create-desc1")}
           placeholder="Title"
           className="p-3 border border-gray-300 rounded-xl"
         />
         <textarea
+          id="create-desc1"
           name="description1"
           value={formData.description1}
           onChange={handleChange}
+          onKeyDown={(e) => handleKeyDown(e, "create-desc2")}
           placeholder="Description 1"
           rows={4}
           className="p-3 border border-gray-300 rounded-xl"
         />
         <textarea
+          id="create-desc2"
           name="description2"
           value={formData.description2}
           onChange={handleChange}
+          onKeyDown={(e) => handleKeyDown(e, "create-city")}
           placeholder="Description 2"
           rows={4}
           className="p-3 border border-gray-300 rounded-xl"
@@ -228,21 +246,26 @@ export default function Blog_creation() {
         </div> */}
 
         <input
+          id="create-city"
           name="city"
           value={formData.city}
           onChange={handleChange}
+          onKeyDown={(e) => handleKeyDown(e, "create-country")}
           placeholder="City"
           className="p-3 border border-gray-300 rounded-xl"
         />
         <input
+          id="create-country"
           name="country"
           value={formData.country}
           onChange={handleChange}
+          onKeyDown={(e) => handleKeyDown(e)}
           placeholder="Country"
           className="p-3 border border-gray-300 rounded-xl"
         />
 
         <button
+          id="create-submit-btn"
           className="mx-auto w-full lg:w-2/5 h-10  text-sm lg:text-lg border-2 border-red-500 rounded-full overflow-hidden bg-red-500 text-white tracking-wide group transition-all duration-500 mb-2 relative disabled:opacity-50 disabled:cursor-not-allowed"
           type="submit"
           disabled={loading}

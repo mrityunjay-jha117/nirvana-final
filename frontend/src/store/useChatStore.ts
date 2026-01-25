@@ -30,6 +30,7 @@ interface ChatState {
   selectedUser: User | null;
   isUsersLoading: boolean;
   isMessagesLoading: boolean;
+  isSending: boolean;
   getUsers: () => Promise<void>;
   getMessages: (userId: string) => Promise<void>;
   sendMessage: (messageData: MessageData) => Promise<void>;
@@ -44,6 +45,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   selectedUser: null,
   isUsersLoading: false,
   isMessagesLoading: false,
+  isSending: false,
 
   getUsers: async () => {
     set({ isUsersLoading: true });
@@ -71,14 +73,17 @@ export const useChatStore = create<ChatState>((set, get) => ({
   sendMessage: async (messageData: MessageData) => {
     const { selectedUser, messages } = get();
     if (!selectedUser) return;
+    set({ isSending: true });
     try {
       const res = await axiosInstance.post(
         `/messages/send/${selectedUser.email}`,
-        messageData
+        messageData,
       );
       set({ messages: [...messages, res.data] });
     } catch (error: any) {
       toast.error(error.response.data.message);
+    } finally {
+      set({ isSending: false });
     }
   },
 

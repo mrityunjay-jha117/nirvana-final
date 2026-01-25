@@ -17,6 +17,8 @@ export default function Credentials() {
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const { signup, login, isLoggingIn, isSigningUp } = useAuthStore();
+  const [isLocalLoginLoading, setIsLocalLoginLoading] = useState(false);
+  const [isLocalSignupLoading, setIsLocalSignupLoading] = useState(false);
 
   const [signupData, setSignupData] = useState<SignupInput>({
     name: "",
@@ -75,6 +77,7 @@ export default function Credentials() {
   });
 
   const handleSignupSubmit = async () => {
+    if (isSigningUp || isLocalSignupLoading) return;
     const validation = signupSchema.safeParse(signupData);
     if (!validation.success) {
       setMessage(
@@ -82,6 +85,7 @@ export default function Credentials() {
       );
       return;
     }
+    setIsLocalSignupLoading(true);
     try {
       const res = await fetch(
         "https://backend.mrityunjay-jha2005.workers.dev/api/v1/user/signup",
@@ -96,22 +100,25 @@ export default function Credentials() {
       if (res.ok) {
         localStorage.setItem("jwt", data.jwt);
         setMessage("Signup successful!");
+        signup({
+          name: signupData.name,
+          email: signupData.email,
+          password: signupData.password,
+        });
         navigate("/window");
       } else {
         setMessage("Signup error: " + (data.error || "Unknown error"));
       }
-      signup({
-        name: signupData.name,
-        email: signupData.email,
-        password: signupData.password,
-      });
     } catch (error) {
       console.error("Signup error:", error);
       setMessage("Error during signup, please try again.");
+    } finally {
+      setIsLocalSignupLoading(false);
     }
   };
 
   const handleLoginSubmit = async () => {
+    if (isLoggingIn || isLocalLoginLoading) return;
     const validation = signinSchema.safeParse(loginData);
     if (!validation.success) {
       setMessage(
@@ -119,6 +126,7 @@ export default function Credentials() {
       );
       return;
     }
+    setIsLocalLoginLoading(true);
     try {
       const res = await fetch(
         "https://backend.mrityunjay-jha2005.workers.dev/api/v1/user/signin",
@@ -133,17 +141,34 @@ export default function Credentials() {
       if (res.ok) {
         localStorage.setItem("jwt", data.jwt);
         setMessage("Login successful!");
+        login({
+          email: loginData.email,
+          password: loginData.password,
+        });
         navigate("/window");
       } else {
         setMessage("Login error: " + (data.error || "Unknown error"));
       }
-      login({
-        email: loginData.email,
-        password: loginData.password,
-      });
     } catch (error) {
       console.error("Signin error:", error);
       setMessage("Error during login, please try again.");
+    } finally {
+      setIsLocalLoginLoading(false);
+    }
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent,
+    nextId?: string,
+    submitAction?: () => void,
+  ) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (nextId) {
+        document.getElementById(nextId)?.focus();
+      } else if (submitAction) {
+        submitAction();
+      }
     }
   };
 
@@ -170,29 +195,33 @@ export default function Credentials() {
             </h2>
             <hr className="border-red-600 border-2 mb-3 w-2/3 xl:w-3/5" />
             <input
+              id="login-email"
               type="email"
               name="email"
               placeholder="Email"
               value={loginData.email}
               onChange={handleLoginChange}
+              onKeyDown={(e) => handleKeyDown(e, "login-password")}
               className="w-3/5  h-8 p-3 mb-3 text-xs xl:text-sm font-medium bg-gray-200 rounded-lg  tracking-wide"
             />
             <input
+              id="login-password"
               type="password"
               name="password"
               placeholder="Password"
               value={loginData.password}
               onChange={handleLoginChange}
+              onKeyDown={(e) => handleKeyDown(e, undefined, handleLoginSubmit)}
               className="w-3/5  h-8 p-3 mb-3 text-xs xl:text-sm font-medium bg-gray-200 rounded-lg  tracking-wide"
             />
             {/* LOGIN Button */}
             <button
               onClick={handleLoginSubmit}
               type="submit"
-              disabled={isLoggingIn}
-              className="cursor-pointer h-8 lg:h-9 w-3/5 xl:h-10 relative overflow-hidden border-2 border-red-500 rounded-full bg-red-500 text-white tracking-wide group transition-all duration-500 hover:border-red-500"
+              disabled={isLoggingIn || isLocalLoginLoading}
+              className="cursor-pointer h-8 lg:h-9 w-3/5 xl:h-10 relative overflow-hidden border-2 border-red-500 rounded-full bg-red-500 text-white tracking-wide group transition-all duration-500 hover:border-red-500 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              {isLoggingIn ? (
+              {isLoggingIn || isLocalLoginLoading ? (
                 <span className="flex items-center justify-center space-x-2">
                   <span className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
                 </span>
@@ -223,28 +252,34 @@ export default function Credentials() {
             </h2>
             <hr className="border-red-600 border-2 mb-3 w-2/3 xl:w-3/5" />
             <input
+              id="signup-name"
               type="text"
               name="name"
               placeholder="Name"
               value={signupData.name}
               onChange={handleSignupChange}
+              onKeyDown={(e) => handleKeyDown(e, "signup-email")}
               className="w-3/5  h-8 p-3 mb-3 text-xs xl:text-sm font-medium bg-gray-200 rounded-lg  tracking-wide"
             />
             <div className="flex w-3/5 flex-row items-center gap-2 justify-between mb-3">
               <input
+                id="signup-email"
                 type="email"
                 name="email"
                 placeholder="Email"
                 value={signupData.email}
                 onChange={handleSignupChange}
+                onKeyDown={(e) => handleKeyDown(e, "signup-password")}
                 className="w-1/2 text-xs xl:text-sm font-medium h-8 p-3 mb-3 bg-gray-200 rounded-lg  tracking-wide"
               />
               <input
+                id="signup-password"
                 type="password"
                 name="password"
                 placeholder="Password"
                 value={signupData.password}
                 onChange={handleSignupChange}
+                onKeyDown={(e) => handleKeyDown(e, "signup-about")}
                 className="w-1/2 text-xs xl:text-sm font-medium h-8 p-3 mb-3 bg-gray-200 rounded-lg  tracking-wide"
               />
             </div>
@@ -252,10 +287,14 @@ export default function Credentials() {
             {/* Profile Image Dropzone with fixed height */}
             <div className="flex w-3/5 flex-row h-30 items-center gap-2 justify-between mb-3">
               <textarea
+                id="signup-about"
                 name="about"
                 placeholder="About"
                 value={signupData.about}
                 onChange={handleSignupChange}
+                onKeyDown={(e) =>
+                  handleKeyDown(e, undefined, handleSignupSubmit)
+                }
                 className="w-1/2 text-xs font-medium h-full p-3 mb-3 bg-gray-200 rounded-lg  tracking-wide "
               />
               <div
@@ -279,10 +318,10 @@ export default function Credentials() {
             <button
               onClick={handleSignupSubmit}
               type="submit"
-              disabled={isSigningUp}
-              className="cursor-pointer h-8 lg:h-9 w-3/5 xl:h-10 relative overflow-hidden border-2 border-red-500 rounded-full bg-red-500 text-white tracking-wide group transition-all duration-500 hover:border-red-500"
+              disabled={isSigningUp || isLocalSignupLoading}
+              className="cursor-pointer h-8 lg:h-9 w-3/5 xl:h-10 relative overflow-hidden border-2 border-red-500 rounded-full bg-red-500 text-white tracking-wide group transition-all duration-500 hover:border-red-500 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              {isSigningUp ? (
+              {isSigningUp || isLocalSignupLoading ? (
                 <span className="flex items-center justify-center space-x-2">
                   <span className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
                 </span>
@@ -370,32 +409,42 @@ export default function Credentials() {
               </h2>
               <hr className="border-red-600 border-2 mb-5 w-2/3" />
               <InputBox
+                id="mobile-signup-name"
                 type="text"
                 name="name"
                 placeholder="Name"
                 value={signupData.name}
                 onChange={handleSignupChange}
+                onKeyDown={(e) => handleKeyDown(e, "mobile-signup-email")}
               />
               <InputBox
+                id="mobile-signup-email"
                 type="email"
                 name="email"
                 placeholder="Email"
                 value={signupData.email}
                 onChange={handleSignupChange}
+                onKeyDown={(e) => handleKeyDown(e, "mobile-signup-password")}
               />
               <InputBox
+                id="mobile-signup-password"
                 type="password"
                 name="password"
                 placeholder="Password"
                 value={signupData.password}
                 onChange={handleSignupChange}
+                onKeyDown={(e) => handleKeyDown(e, "mobile-signup-about")}
               />
               <InputBox
+                id="mobile-signup-about"
                 type="text"
                 name="about"
                 placeholder="About you"
                 value={signupData.about}
                 onChange={handleSignupChange}
+                onKeyDown={(e) =>
+                  handleKeyDown(e, undefined, handleSignupSubmit)
+                }
               />
 
               {/* Profile Image Dropzone for Mobile */}
@@ -420,7 +469,7 @@ export default function Credentials() {
               <Button
                 buttonText="SIGN UP"
                 onClick={handleSignupSubmit}
-                isSubmitting={isSigningUp}
+                isSubmitting={isSigningUp || isLocalSignupLoading}
               />
 
               <p className="text-sm sm:text-base mt-3 tracking-wide">
@@ -440,24 +489,30 @@ export default function Credentials() {
               </h2>
               <hr className="border-red-600 border-2 mt-2 mb-7 w-5/6" />
               <InputBox
+                id="mobile-login-email"
                 type="email"
                 name="email"
                 placeholder="Email"
                 value={loginData.email}
                 onChange={handleLoginChange}
+                onKeyDown={(e) => handleKeyDown(e, "mobile-login-password")}
               />
               <InputBox
+                id="mobile-login-password"
                 type="password"
                 name="password"
                 placeholder="Password"
                 value={loginData.password}
                 onChange={handleLoginChange}
+                onKeyDown={(e) =>
+                  handleKeyDown(e, undefined, handleLoginSubmit)
+                }
               />
               {/* Mobile LOGIN Button */}
               <Button
                 buttonText="LOGIN"
                 onClick={handleLoginSubmit}
-                isSubmitting={isLoggingIn}
+                isSubmitting={isLoggingIn || isLocalLoginLoading}
               />
 
               <p className="ml-4 text-sm sm:text-base mt-3 tracking-wide">

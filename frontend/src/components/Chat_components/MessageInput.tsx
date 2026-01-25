@@ -6,7 +6,7 @@ const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { sendMessage } = useChatStore();
+  const { sendMessage, isSending } = useChatStore();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -29,9 +29,9 @@ const MessageInput = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const sendMessageLogic = async () => {
     if (!text.trim() && !imagePreview) return;
+    if (isSending) return;
 
     try {
       await sendMessage({
@@ -45,6 +45,18 @@ const MessageInput = () => {
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       console.error("Failed to send message:", error);
+    }
+  };
+
+  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    sendMessageLogic();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessageLogic();
     }
   };
 
@@ -78,12 +90,15 @@ const MessageInput = () => {
         className="flex items-center gap-2 sm:gap-3"
       >
         <div className="flex-1 flex gap-2 items-center bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl px-3 sm:px-4 py-2 sm:py-3 shadow-inner shadow-black/30 focus-within:border-emerald-500/30 focus-within:bg-white/10 transition-all duration-200">
-          <input
-            type="text"
-            className="w-full bg-transparent outline-none placeholder:text-zinc-500 text-zinc-100 text-sm sm:text-base"
+          <textarea
+            className="w-full bg-transparent outline-none placeholder:text-zinc-500 text-zinc-100 text-sm sm:text-base resize-none overflow-hidden disabled:opacity-50"
             placeholder="Type a message..."
             value={text}
             onChange={(e) => setText(e.target.value)}
+            onKeyDown={handleKeyDown}
+            disabled={isSending}
+            rows={1}
+            style={{ minHeight: "24px", maxHeight: "120px" }}
           />
           <input
             type="file"
@@ -95,6 +110,7 @@ const MessageInput = () => {
 
           <button
             type="button"
+            disabled={isSending}
             className={`flex items-center justify-center size-8 sm:size-10 rounded-full transition-all duration-200 ${
               imagePreview
                 ? "bg-emerald-500/20 text-emerald-300 ring-2 ring-emerald-500/30"
@@ -108,9 +124,13 @@ const MessageInput = () => {
         <button
           type="submit"
           className="flex items-center justify-center size-10 sm:size-11 lg:size-12 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-none shadow-lg shadow-emerald-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-110 active:scale-95"
-          disabled={!text.trim() && !imagePreview}
+          disabled={(!text.trim() && !imagePreview) || isSending}
         >
-          <Send size={18} className="sm:size-5" />
+          {isSending ? (
+            <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <Send size={18} className="sm:size-5" />
+          )}
         </button>
       </form>
     </div>

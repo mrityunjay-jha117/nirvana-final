@@ -128,6 +128,17 @@ export default function BlogUpdate() {
     [formData, id, navigate],
   );
 
+  const handleKeyDown = (e: React.KeyboardEvent, nextId?: string) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (nextId) {
+        document.getElementById(nextId)?.focus();
+      } else {
+        document.getElementById("update-submit-btn")?.click();
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="w-full h-[80vh] flex items-center justify-center text-xl">
@@ -158,44 +169,55 @@ export default function BlogUpdate() {
         className="flex flex-col gap-3 bg-white p-5 rounded-lg shadow-xl"
       >
         <input
+          id="update-title"
           name="title"
           value={formData.title}
           onChange={handleChange}
+          onKeyDown={(e) => handleKeyDown(e, "update-desc1")}
           placeholder="Title"
           className="p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
         />
         <textarea
+          id="update-desc1"
           name="description1"
           value={formData.description1}
           onChange={handleChange}
+          onKeyDown={(e) => handleKeyDown(e, "update-desc2")}
           placeholder="Description 1"
           rows={4}
           className="p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
         />
         <textarea
+          id="update-desc2"
           name="description2"
           value={formData.description2}
           onChange={handleChange}
+          onKeyDown={(e) => handleKeyDown(e, "update-city")}
           placeholder="Description 2"
           rows={4}
           className="p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
         />
         <input
+          id="update-city"
           name="city"
           value={formData.city}
           onChange={handleChange}
+          onKeyDown={(e) => handleKeyDown(e, "update-country")}
           placeholder="City"
           className="p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
         />
         <input
+          id="update-country"
           name="country"
           value={formData.country}
           onChange={handleChange}
+          onKeyDown={(e) => handleKeyDown(e)}
           placeholder="Country"
           className="p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
         />
 
         <button
+          id="update-submit-btn"
           type="submit"
           disabled={isSubmitting}
           className="relative mx-auto w-5/6 lg:w-[400px] lg:h-[60px] h-10 text-sm lg:text-3xl border-6 border-red-500 rounded-full overflow-hidden bg-red-500 text-white tracking-wide group transition-all duration-500 mb-2"
