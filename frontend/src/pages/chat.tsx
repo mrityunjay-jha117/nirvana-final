@@ -114,7 +114,7 @@ export default function Chat() {
 
   return (
     <div className="w-full h-[60vh] sm:h-[500px] sm:w-[350px] flex flex-col rounded-2xl overflow-hidden bg-white shadow-2xl border border-gray-200">
-      {/* Header */}
+      
       <div className="h-14 bg-gray-900 flex items-center px-4 justify-between shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center border border-white/20">

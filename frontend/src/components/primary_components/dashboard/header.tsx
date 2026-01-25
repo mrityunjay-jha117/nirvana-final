@@ -42,6 +42,21 @@ function Header() {
                 className="relative group"
               >
                 <Tags
+                  link="chat"
+                  name="Chat"
+                  className="text-sm md:text-base font-medium tracking-wide"
+                />
+                <motion.div
+                  className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"
+                  layoutId="underline"
+                />
+              </motion.li>
+              <motion.li
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative group"
+              >
+                <Tags
                   link="user"
                   name="MY PAGE"
                   className="text-sm md:text-base font-medium tracking-wide"

@@ -2,7 +2,6 @@ import { useChatStore } from "../store/useChatStore";
 import Chat_list from "../components/Chat_components/Chat_list";
 import NoChatSelected from "../components/Chat_components/NoChatSelected";
 import ChatContainer from "../components/Chat_components/ChatContainer";
-// import Header from "../components/primary_components/dashboard/header";
 const Nirvana_Chat = () => {
   const { selectedUser } = useChatStore();
 
