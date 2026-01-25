@@ -7,18 +7,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: function (origin, callback) {
-      const allowedOrigins = [
-        "http://localhost:5173",
-        "https://nirvana-final-delta.vercel.app",
-      ];
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(null, true); // Allow all for ngrok testing
-      }
-    },
-    credentials: true,
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });

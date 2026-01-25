@@ -72,7 +72,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ authUser: res.data });
       get().connectSocket();
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Signup failed");
     } finally {
       set({ isSigningUp: false });
     }
@@ -86,7 +86,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ authUser: res.data });
       get().connectSocket();
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Login failed");
     } finally {
       set({ isLoggingIn: false });
     }
@@ -99,7 +99,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ authUser: null });
       get().disconnectSocket();
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Logout failed");
     }
   },
 

@@ -7,7 +7,6 @@ const baseURL = isDevelopment
 
 export const axiosInstance = axios.create({
   baseURL: baseURL || "http://localhost:5001/api",
-  withCredentials: true,
   headers: {
     "ngrok-skip-browser-warning": "true",
   },

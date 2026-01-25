@@ -21,29 +21,14 @@ app.use(cookieParser());
 
 // CORS configuration
 const corsOptions = {
-  origin: function (origin, callback) {
-    const allowedOrigins = [
-      "http://localhost:5173",
-      "https://nirvana-final-delta.vercel.app",
-    ];
-    // Allow requests with no origin (mobile apps, curl, etc.)
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(null, true); // Allow all origins for ngrok testing
-    }
-  },
-  credentials: true,
+  origin: "*", // Allow all origins
+  credentials: false, // No cookies needed
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: [
     "Content-Type",
     "Authorization",
-    "Cookie",
     "ngrok-skip-browser-warning",
   ],
-  exposedHeaders: ["Set-Cookie"],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
