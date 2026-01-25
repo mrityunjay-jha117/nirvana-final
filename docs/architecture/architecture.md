@@ -6,7 +6,7 @@ Nirvana is built using a carefully designed **microservices architecture** that 
 
 ## System Overview
 
-![System Architecture Diagram](./architecture.png)
+![System Architecture Diagram](./images_for_reference/architecture.png)
 
 ---
 
@@ -44,7 +44,7 @@ Prisma Accelerate solves this by introducing a **global, managed connection pool
 
 This prevents **connection exhaustion**, reduces **cold-start latency**, and ensures **stable performance under high concurrency**, while also enabling **edge-safe database access** without violating serverless constraints.
 
----
+## ![more on connection pooling here](./connection_pooling.md)
 
 ### Real-Time Service
 
@@ -139,7 +139,14 @@ In development, services are typically run independently and communicate over lo
 
 **Role of ngrok**
 
-The real-time service code includes permissive CORS logic explicitly noted as “Allow all for ngrok testing”. This indicates **ngrok is a development/testing tool** used to expose the local Express server to the public internet (for testing webhooks, mobile devices, remote clients, or cross-network sockets). It should be treated as **development-only** and not as a production deployment mechanism.
+The real-time service code includes permissive CORS logic explicitly noted as “Allow all for ngrok testing”. In this system, **ngrok is used to expose the locally running Express real-time service (port 5001) to the public internet**, and the **frontend calls the ngrok URL** to reach the chat backend.
+
+This is currently used in:
+
+- **Development**: local Express server on `http://localhost:5001`, exposed via an ngrok public URL for cross-network testing.
+- **Production (current state)**: the Express server is still running locally and is **not deployed to a managed hosting provider** (e.g., Render). The production frontend reaches the chat backend through the **ngrok public URL**.
+
+Operationally, this means ngrok is functioning as the public ingress for the real-time service in both environments.
 
 ### Production deployment
 
@@ -147,7 +154,13 @@ In production, each component is deployed using the platform most suited to its 
 
 - **Frontend** is deployed as a static/web app build (for example, on Vercel as indicated by the frontend configuration).
 - **Edge API Service** is deployed to Cloudflare Workers using Wrangler (`wrangler deploy`).
-- **Real-time Service** is deployed as a long-running Node.js process (VM, container, or managed Node hosting) with Socket.IO enabled.
+
+**Real-time Service (current state)**
+
+- The Express + Socket.IO real-time service is **not deployed** to a dedicated hosting platform.
+- It runs locally on port `5001` and is exposed to the public internet using **ngrok**, and the frontend is configured to call that ngrok URL.
+
+This keeps the architecture intact (separate real-time service), but the deployment model for the real-time service is currently “local + ngrok” rather than “managed hosting”.
 
 Operationally, production requires:
 

@@ -3,10 +3,12 @@ import User from "../models/user.model.js";
 
 export const protectRoute = async (req, res, next) => {
   try {
-    const token = req.cookies.jwt;
+    const token = req.headers.authorization?.split(" ")[1];
 
     if (!token) {
-      return res.status(401).json({ message: "Unauthorized - No Token Provided" });
+      return res
+        .status(401)
+        .json({ message: "Unauthorized - No Token Provided" });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -16,7 +18,7 @@ export const protectRoute = async (req, res, next) => {
     }
 
     const user = await User.findOne({ email: decoded.userId }).select(
-      "-password"
+      "-password",
     );
 
     if (!user) {

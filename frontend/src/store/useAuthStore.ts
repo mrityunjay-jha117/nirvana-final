@@ -68,6 +68,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
+      localStorage.setItem("token", res.data.token);
       set({ authUser: res.data });
       get().connectSocket();
     } catch (error: any) {
@@ -81,6 +82,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ isLoggingIn: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
+      localStorage.setItem("token", res.data.token);
       set({ authUser: res.data });
       get().connectSocket();
     } catch (error: any) {
@@ -93,6 +95,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
+      localStorage.removeItem("token");
       set({ authUser: null });
       get().disconnectSocket();
     } catch (error: any) {
