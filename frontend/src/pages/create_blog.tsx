@@ -15,7 +15,7 @@ export default function Blog_creation() {
     description2: "",
     images: [],
     footerImage: "https://example.com/images.jpg",
-    likes:7,
+    likes: 7,
     city: "",
     country: "",
   });
@@ -31,7 +31,7 @@ export default function Blog_creation() {
         [name]: value,
       }));
     },
-    []
+    [],
   );
 
   const uploadImage = async (file: File) => {
@@ -43,7 +43,7 @@ export default function Blog_creation() {
       {
         method: "POST",
         body,
-      }
+      },
     );
     const data = await res.json();
     if (res.ok && data.url) {
@@ -77,13 +77,10 @@ export default function Blog_creation() {
     }
   }, []);
 
-  
-
   const { getRootProps: getBlogHeadRoot, getInputProps: getBlogHeadInput } =
     useDropzone({ onDrop: onDropBlogHead, maxFiles: 1 });
   const { getRootProps: getImagesRoot, getInputProps: getImagesInput } =
     useDropzone({ onDrop: onDropImages });
-
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -112,7 +109,7 @@ export default function Blog_creation() {
             method: "POST",
             headers,
             body: JSON.stringify(parsed.data),
-          }
+          },
         );
 
         if (res.ok) {
@@ -128,7 +125,7 @@ export default function Blog_creation() {
         setLoading(false);
       }
     },
-    [formData, navigate]
+    [formData, navigate],
   );
 
   return (

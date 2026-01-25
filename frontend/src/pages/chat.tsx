@@ -18,7 +18,7 @@ export default function Chat() {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("jwt")}`,
             },
-          }
+          },
         );
 
         const data = await res.json();
@@ -62,14 +62,17 @@ export default function Chat() {
       const jwt = localStorage.getItem("jwt");
 
       // Step 1: Save user message
-      await fetch("https://backend.mrityunjay-jha2005.workers.dev/api/v1/message/chat/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
+      await fetch(
+        "https://backend.mrityunjay-jha2005.workers.dev/api/v1/message/chat/add",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+          body: JSON.stringify({ message: messageToSend, isBot: false }),
         },
-        body: JSON.stringify({ message: messageToSend, isBot: false }),
-      });
+      );
 
       // Step 2: Call Gemini API with the user prompt
       const geminiRes = await fetch(
@@ -81,21 +84,24 @@ export default function Chat() {
             Authorization: `Bearer ${jwt}`,
           },
           body: JSON.stringify({ prompt: messageToSend }),
-        }
+        },
       );
 
       const geminiData = await geminiRes.json();
       const botResponse = geminiData?.response ?? "No response";
 
       // Step 3: Save Gemini bot response
-      await fetch("https://backend.mrityunjay-jha2005.workers.dev/api/v1/message/chat/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
+      await fetch(
+        "https://backend.mrityunjay-jha2005.workers.dev/api/v1/message/chat/add",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+          body: JSON.stringify({ message: botResponse, isBot: true }),
         },
-        body: JSON.stringify({ message: botResponse, isBot: true }),
-      });
+      );
 
       // Step 4: Replace "Typing..." with actual bot response
       setMessages((prev) => [
@@ -108,48 +114,66 @@ export default function Chat() {
   };
 
   return (
-    <motion.div
-      className="absolute bottom-0 right-0 sm:bottom-2 sm:right-4 lg:bottom-6 lg:right-6 w-3/4 h-[80vh] sm:w-1/3 md:w-80  xl:w-1/4 h-[60vh] sm:h-[70vh] flex flex-col rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-2xl "
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1.0, ease: "easeOut" }}
-    >
+    <div className="w-full h-[60vh] sm:h-[500px] sm:w-[350px] flex flex-col rounded-2xl overflow-hidden bg-white shadow-2xl border border-gray-200">
       {/* Header */}
-      <motion.div className="h-1/7 bg-[#333446] flex items-center px-5">
+      <div className="h-14 bg-gray-900 flex items-center px-4 justify-between shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-5 h-5 sm:w-10 sm:h-10 bg-white rounded-full flex items-center justify-center shadow-inner"></div>
-          <span className="text-white text-sm sm:text-lg font-semibold tracking-wide">
-            Chat Assistant
-          </span>
+          <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
+            <div className="w-4 h-4 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"></div>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-white text-sm font-semibold tracking-wide">
+              AI Assistant
+            </span>
+            <span className="text-gray-400 text-[10px] font-medium">
+              Powered by Gemini
+            </span>
+          </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Messages */}
-      <div className="h-5/7 p-1 sm:p-4 overflow-y-auto bg-[#7F8CAA] scrollbar-hide space-y-3">
+      <div className="flex-1 p-4 overflow-y-auto bg-gray-50 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent space-y-4">
         {messages.map((msg, index) => (
           <InViewMessage key={index} message={msg} />
         ))}
+        {messages.length === 0 && (
+          <div className="h-full flex flex-col items-center justify-center text-gray-400 space-y-2 opacity-50">
+            <div className="text-4xl">👋</div>
+            <p className="text-xs">Say hello to start chatting!</p>
+          </div>
+        )}
         <div ref={scrollRef} />
       </div>
 
       {/* Input */}
-      <motion.div className="h-1/7  p-2 bg-white">
-        <div className="flex flex-row items-center space-x-2">
+      <div className="p-3 bg-white border-t border-gray-100 shrink-0">
+        <div className="flex items-center gap-2 bg-gray-50 rounded-full px-4 py-2 border border-gray-200 focus-within:border-gray-400 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
           <input
             type="text"
-            placeholder="Type your message..."
+            placeholder="Ask anything..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="w-4/5 text-[10px] rounded-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-shadow shadow-inner"
+            className="flex-1 bg-transparent text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none"
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
           />
           <button
             onClick={handleSend}
-            className="w-1/5 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 transition-all shadow-md text-white "
-          ></button>
+            disabled={!input.trim()}
+            className="w-8 h-8 flex items-center justify-center rounded-full bg-black text-white disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-transform"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-4 h-4"
+            >
+              <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+            </svg>
+          </button>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -163,29 +187,26 @@ function InViewMessage({ message }: { message: Message }) {
   return (
     <motion.div
       ref={ref}
-      className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      transition={{ duration: 0.5 }}
+      className={`flex ${message.isBot ? "justify-start" : "justify-end"} w-full`}
+      initial={{ opacity: 0, y: 10 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+      transition={{ duration: 0.3 }}
     >
       <div
-        className={`max-w-[75%] text-[8px] sm:text-xs rounded-2xl px-4 py-2 shadow transition-transform duration-300 hover:scale-[1.02] ${
+        className={`max-w-[85%] text-xs sm:text-sm rounded-2xl px-3 py-2 sm:px-4 sm:py-3 shadow-sm ${
           message.isBot
-            ? "bg-[#333446] text-white rounded-bl-none"
-            : "bg-[#B8CFCE] text-black rounded-br-none"
+            ? "bg-white border border-gray-100 text-gray-800 rounded-bl-none"
+            : "bg-black text-white rounded-br-none"
         }`}
       >
         {message.loading ? (
-          <div className="">
-            <TypingEffect
-              color="text-white"
-              typingSpeed={400}
-              wordsize="text-[13px] sm:text-2xl text-white tracking-widest"
-              texts={["........"]}
-            />
+          <div className="flex gap-1 items-center px-1">
+            <span className="w-1 h-1 bg-current rounded-full animate-bounce"></span>
+            <span className="w-1 h-1 bg-current rounded-full animate-bounce [animation-delay:0.2s]"></span>
+            <span className="w-1 h-1 bg-current rounded-full animate-bounce [animation-delay:0.4s]"></span>
           </div>
         ) : (
-          message.text
+          <p className="leading-relaxed">{message.text}</p>
         )}
       </div>
     </motion.div>

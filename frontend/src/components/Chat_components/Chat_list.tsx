@@ -20,15 +20,13 @@ const Chat_list = () => {
   if (isUsersLoading) return <SidebarSkeleton />;
 
   return (
-    <aside className="h-screen overflow-y-auto scrollbar-hide w-16 sm:w-20 lg:w-80 bg-gradient-to-b from-slate-950 to-slate-900 text-white border-r border-white/5 flex flex-col transition-all duration-300 shadow-2xl shadow-black/50">
-      <div className="border-b border-white/10 w-full p-3 sm:p-4 lg:p-5 backdrop-blur-sm bg-white/5">
+    <aside className="h-full w-full lg:w-80 bg-gradient-to-b from-slate-950 to-slate-900 text-white border-r border-white/5 flex flex-col transition-all duration-300 shadow-2xl shadow-black/50">
+      <div className="border-b border-white/10 w-full p-4 backdrop-blur-sm bg-white/5">
         <div className="flex items-center gap-3">
-          <span className="font-semibold text-lg hidden lg:block text-white">
-            Contacts
-          </span>
+          <span className="font-semibold text-lg text-white">Contacts</span>
         </div>
         {/* Online filter toggle */}
-        <div className="mt-4 hidden lg:flex items-center justify-between">
+        <div className="mt-4 flex items-center justify-between">
           <label className="cursor-pointer flex items-center gap-2 group">
             <input
               type="checkbox"
@@ -40,17 +38,16 @@ const Chat_list = () => {
               Show online only
             </span>
           </label>
-         
         </div>
       </div>
 
-      <div className="overflow-y-auto w-full py-2 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent hover:scrollbar-thumb-white/20">
+      <div className="overflow-y-auto flex-1 w-full py-2 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent hover:scrollbar-thumb-white/20">
         {filteredUsers.map((user: User) => (
           <button
             key={user.email}
             onClick={() => setSelectedUser(user)}
             className={`
-              w-full p-2 sm:p-3 lg:p-4 flex items-center gap-3 lg:gap-4
+              w-full p-3 lg:p-4 flex items-center gap-3 lg:gap-4
               transition-all duration-200 relative group
               ${
                 selectedUser?.email === user.email
@@ -59,9 +56,9 @@ const Chat_list = () => {
               }
             `}
           >
-            <div className="relative mx-auto lg:mx-0 flex-shrink-0">
+            <div className="relative flex-shrink-0">
               <div
-                className={`size-10 sm:size-12 lg:size-14 rounded-full overflow-hidden ring-2 transition-all duration-200 ${
+                className={`size-12 lg:size-14 rounded-full overflow-hidden ring-2 transition-all duration-200 ${
                   selectedUser?.email === user.email
                     ? "ring-emerald-500/50"
                     : "ring-white/10 group-hover:ring-white/20"
@@ -78,8 +75,8 @@ const Chat_list = () => {
               )}
             </div>
 
-            {/* User info - only visible on larger screens */}
-            <div className="hidden lg:flex flex-col text-left min-w-0 flex-1">
+            {/* User info - visible on all screens now since list is full width on mobile */}
+            <div className="flex flex-col text-left min-w-0 flex-1">
               <div className="font-semibold text-base truncate text-white group-hover:text-emerald-300 transition-colors">
                 {user.name}
               </div>

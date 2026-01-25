@@ -32,7 +32,7 @@ export default function Credentials() {
   });
 
   const handleSignupChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setSignupData({ ...signupData, [e.target.name]: e.target.value });
   };
@@ -50,7 +50,7 @@ export default function Credentials() {
       {
         method: "POST",
         body,
-      }
+      },
     );
     const data = await res.json();
     if (res.ok && data.url) {
@@ -78,7 +78,7 @@ export default function Credentials() {
     const validation = signupSchema.safeParse(signupData);
     if (!validation.success) {
       setMessage(
-        "Signup validation error: " + JSON.stringify(validation.error.errors)
+        "Signup validation error: " + JSON.stringify(validation.error.errors),
       );
       return;
     }
@@ -89,7 +89,7 @@ export default function Credentials() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(validation.data),
-        }
+        },
       );
       const data = await res.json();
 
@@ -115,7 +115,7 @@ export default function Credentials() {
     const validation = signinSchema.safeParse(loginData);
     if (!validation.success) {
       setMessage(
-        "Signin validation error: " + JSON.stringify(validation.error.errors)
+        "Signin validation error: " + JSON.stringify(validation.error.errors),
       );
       return;
     }
@@ -126,7 +126,7 @@ export default function Credentials() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(validation.data),
-        }
+        },
       );
       const data = await res.json();
 

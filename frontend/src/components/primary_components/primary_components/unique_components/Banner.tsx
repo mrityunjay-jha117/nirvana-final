@@ -101,6 +101,9 @@ export default function Banner() {
         </motion.div>
       ))}
 
+      {/* Dark Gradient Overlay for better text visibility */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 z-[5]" />
+
       {/* Animated Title */}
       <motion.div
         className="absolute inset-0 flex items-center justify-center z-10"

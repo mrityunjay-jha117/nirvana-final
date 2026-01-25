@@ -4,6 +4,7 @@ import {
   UpdateBlogInput,
 } from "@mrityunjay__jha117/reload_common";
 import { useNavigate, useParams } from "react-router-dom";
+
 export default function BlogUpdate() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
@@ -66,7 +67,7 @@ export default function BlogUpdate() {
         [name]: value,
       }));
     },
-    []
+    [],
   );
 
   const handleSubmit = useCallback(
@@ -103,7 +104,7 @@ export default function BlogUpdate() {
             method: "PUT",
             headers,
             body: JSON.stringify(parsed.data),
-          }
+          },
         );
 
         if (res.ok) {
@@ -114,7 +115,7 @@ export default function BlogUpdate() {
           alert(
             `Failed to update blog. Error: ${
               errorData.message || "Unknown error"
-            }`
+            }`,
           );
         }
       } catch (err) {
@@ -124,7 +125,7 @@ export default function BlogUpdate() {
         setIsSubmitting(false);
       }
     },
-    [formData, id, navigate]
+    [formData, id, navigate],
   );
 
   if (loading) {

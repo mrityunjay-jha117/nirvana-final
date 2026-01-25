@@ -8,7 +8,7 @@ function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      className="fixed h-16 top-0 left-0 w-full bg-black backdrop-blur-sm text-white z-50"
+      className="fixed h-16 top-0 left-0 w-full 2xl:w-[60%] 2xl:left-1/2 2xl:-translate-x-1/2 2xl:rounded-b-xl bg-black backdrop-blur-sm text-white z-50 transition-all duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">

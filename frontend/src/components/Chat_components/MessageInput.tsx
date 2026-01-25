@@ -49,7 +49,7 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="p-3 sm:p-4 lg:p-5 w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-t border-white/10 backdrop-blur-xl shadow-2xl shadow-black/50">
+    <div className="p-3 sm:p-4 pb-6 sm:pb-4 lg:p-5 w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-t border-white/10 backdrop-blur-xl shadow-2xl shadow-black/50">
       {imagePreview && (
         <div className="mb-3 flex items-center gap-3 p-3 bg-white/5 rounded-2xl border border-white/10 animate-fadeIn">
           <div className="relative group">

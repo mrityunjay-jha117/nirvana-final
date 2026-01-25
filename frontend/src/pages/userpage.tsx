@@ -70,7 +70,7 @@ export default function Hime() {
 
       console.log("Friend added successfully:", response.data);
       alert(
-        response.data.message || `Friend "${friendName}" added successfully!`
+        response.data.message || `Friend "${friendName}" added successfully!`,
       );
 
       // Reset state
@@ -100,11 +100,11 @@ export default function Hime() {
         const [userRes, statsRes] = await Promise.all([
           fetch(
             "https://backend.mrityunjay-jha2005.workers.dev/api/v1/user/me",
-            { headers }
+            { headers },
           ),
           fetch(
             "https://backend.mrityunjay-jha2005.workers.dev/api/v1/blog/stats",
-            { headers }
+            { headers },
           ),
         ]);
 
@@ -145,7 +145,7 @@ export default function Hime() {
       try {
         const res = await fetch(
           `https://backend.mrityunjay-jha2005.workers.dev/api/v1/user/author/${author.id}?page=${currentPage}`,
-          { headers }
+          { headers },
         );
         const data = await res.json();
 
@@ -170,309 +170,318 @@ export default function Hime() {
 
   return (
     <AnimatePresence>
-      <Header />
+      <div className="w-full min-h-screen bg-[#e9ddd0] 2xl:flex 2xl:justify-center">
+        <div className="w-full 2xl:max-w-[60%] flex flex-col min-h-screen relative 2xl:shadow-2xl transition-all duration-300">
+          <Header />
 
-      <motion.main
-        className="min-h-screen overflow-y-hidden scrollbar-hide mt-20 sm:mt-32 bg-[#e9ddd0] "
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="mx-auto px-4 sm:px-8 lg:px-12">
-          {/* Hero Section */}
-          <motion.section
-            variants={fadeInUp}
-            initial="initial"
-            animate="animate"
-          >
-            <motion.h1
-              className="text-5xl sm:text-7xl md:text-8xl tracking-wide font-bold text-gray-900"
-              initial={{ x: -100, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              {author.name}
-            </motion.h1>
-            <motion.div
-              className="w-full lg:w-3/4 mt-4 h-8 sm:h-24 lg:h-28"
-              initial={{ x: 100, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <TypingEffect
-                wordsize="text-sm leading-tight xl:text-lg"
-                color="text-gray-900"
-                texts={[
-                  "The mountains are calling, and I must go",
-                  "Trekking is the art of getting lost in nature, and finding yourself",
-                  "Life is either a daring adventure or nothing at all",
-                  "Not all those who wander are lost",
-                  "Every mountain top is within reach if you just keep climbing",
-                  "In every walk with nature, one receives far more than he seeks",
-                  "It's not the mountain we conquer, but ourselves",
-                  "Take only pictures, leave only footprints",
-                  "The best view comes after the hardest climb",
-                ]}
-              />
-            </motion.div>
-          </motion.section>
-
-          {/* About Section */}
-          <motion.section
-            className="mt-16 lg:w-15/16 mx-auto sm:mt-0"
-            initial={{ scale: 0.95, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
+          <motion.main
+            className="min-h-screen overflow-y-hidden scrollbar-hide mt-20 sm:mt-32 bg-[#e9ddd0] "
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <motion.div
-              className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 lg:p-10"
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="flex flex-row items-center justify-between gap-4 mb-5">
+            <div className="mx-auto px-4 sm:px-8 lg:px-12">
+              {/* Hero Section */}
+              <motion.section
+                variants={fadeInUp}
+                initial="initial"
+                animate="animate"
+              >
+                <motion.h1
+                  className="text-5xl sm:text-7xl md:text-8xl tracking-wide font-bold text-gray-900"
+                  initial={{ x: -100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                >
+                  {author.name}
+                </motion.h1>
+                <motion.div
+                  className="w-full lg:w-3/4 mt-4 h-8 sm:h-24 lg:h-28"
+                  initial={{ x: 100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                >
+                  <TypingEffect
+                    wordsize="text-sm leading-tight xl:text-lg"
+                    color="text-gray-900"
+                    texts={[
+                      "The mountains are calling, and I must go",
+                      "Trekking is the art of getting lost in nature, and finding yourself",
+                      "Life is either a daring adventure or nothing at all",
+                      "Not all those who wander are lost",
+                      "Every mountain top is within reach if you just keep climbing",
+                      "In every walk with nature, one receives far more than he seeks",
+                      "It's not the mountain we conquer, but ourselves",
+                      "Take only pictures, leave only footprints",
+                      "The best view comes after the hardest climb",
+                    ]}
+                  />
+                </motion.div>
+              </motion.section>
+
+              {/* About Section */}
+              <motion.section
+                className="mt-16 lg:w-15/16 mx-auto sm:mt-0"
+                initial={{ scale: 0.95, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                <motion.div
+                  className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 lg:p-10"
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-5">
+                    <motion.h2
+                      className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900"
+                      initial={{ y: 20, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                      About
+                    </motion.h2>
+                    <div className="flex flex-wrap gap-3 w-full md:w-auto">
+                      {!showFriendInput ? (
+                        <motion.button
+                          onClick={() => setShowFriendInput(true)}
+                          className="flex-1 md:flex-none px-4 py-2 sm:px-8 sm:py-2 text-sm sm:text-lg rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white font-medium shadow-xl hover:from-green-600 hover:to-green-700 whitespace-nowrap"
+                          whileHover={{
+                            scale: 1.05,
+                            boxShadow: "0 5px 15px rgba(0,0,0,0.2)",
+                          }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          Add Friend
+                        </motion.button>
+                      ) : (
+                        <motion.div
+                          className="flex flex-wrap gap-2 items-center w-full md:w-auto"
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <input
+                            type="text"
+                            value={friendName}
+                            onChange={(e) => setFriendName(e.target.value)}
+                            placeholder="Friend's email"
+                            className="flex-grow md:flex-grow-0 w-full md:w-auto px-4 py-2 rounded-full border-2 border-green-500 focus:outline-none focus:border-green-600 text-sm"
+                            autoFocus
+                            onKeyPress={(e) => {
+                              if (e.key === "Enter") {
+                                handleAddFriend();
+                              }
+                            }}
+                          />
+                          <div className="flex gap-2 w-full md:w-auto justify-end">
+                            <motion.button
+                              onClick={handleAddFriend}
+                              className="px-4 py-2 rounded-full bg-green-500 text-white hover:bg-green-600 text-sm sm:text-md"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              Send
+                            </motion.button>
+                            <motion.button
+                              onClick={() => {
+                                setShowFriendInput(false);
+                                setFriendName("");
+                              }}
+                              className="px-4 py-2 rounded-full bg-gray-400 text-white hover:bg-gray-500 text-sm sm:text-md"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              Cancel
+                            </motion.button>
+                          </div>
+                        </motion.div>
+                      )}
+                      <motion.button
+                        onClick={() => navigate("/create")}
+                        className="flex-1 md:flex-none px-4 py-2 sm:px-8 sm:py-2 text-sm sm:text-lg rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white font-medium shadow-xl hover:from-red-600 hover:to-red-700 whitespace-nowrap"
+                        whileHover={{
+                          scale: 1.05,
+                          boxShadow: "0 5px 15px rgba(0,0,0,0.2)",
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        CREATE
+                      </motion.button>
+                    </div>
+                  </div>
+                  <motion.p
+                    className="text-sm lg:text-lg text-gray-700 leading-relaxed"
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                  >
+                    {author.about}
+                  </motion.p>
+                  <motion.p
+                    className="mt-6 text-sm sm:text-lg text-gray-500 italic"
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                  >
+                    {author.email}
+                  </motion.p>
+                </motion.div>
+              </motion.section>
+
+              {/* Stats Section */}
+              <motion.section
+                className="mt-16 sm:mt-20 lg:mt-24 w-5/6 mx-auto"
+                variants={staggerContainer}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true }}
+              >
+                <div className="flex flex-col sm:flex-row gap-6">
+                  {[
+                    {
+                      label: "Total Likes",
+                      value: totalLikes,
+                      icon: "heart",
+                      gradient: "from-500 to-red-500",
+                    },
+                    {
+                      label: "Blog Posts",
+                      value: blogCount,
+                      icon: "blog",
+                      gradient: "from-500 to-indigo-500",
+                    },
+                  ].map(({ label, value, icon, gradient }, index) => (
+                    <motion.div
+                      key={label}
+                      className={`w-full sm:w-1/2 bg-gradient-to-br ${gradient} rounded-2xl shadow-lg p-6 sm:p-8 transform transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl`}
+                      initial={{ y: 50, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.2, duration: 0.6 }}
+                    >
+                      <div className="flex flex-col items-center text-white">
+                        <motion.img
+                          src={`./../images/icons/${icon}.png`}
+                          alt={label}
+                          className="h-12 sm:h-14 lg:h-16 w-auto mb-4"
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                          transition={{ type: "spring", stiffness: 300 }}
+                        />
+                        <motion.span
+                          className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2"
+                          initial={{ scale: 0 }}
+                          whileInView={{ scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{
+                            delay: index * 0.2 + 0.3,
+                            type: "spring",
+                          }}
+                        >
+                          {value}
+                        </motion.span>
+                        <span className="text-base sm:text-lg lg:text-xl font-medium text-white/90">
+                          {label}
+                        </span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.section>
+              <hr className="h-1 rounded-full w-14/15 mx-auto bg-black my-8 sm:my-20 lg:my-24" />
+              {/* Blog Grid */}
+              <motion.section
+                ref={storiesRef}
+                variants={staggerContainer}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true }}
+              >
                 <motion.h2
-                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900"
+                  className="text-6xl sm:text-6xl lg:text-8xl font-bold text-gray-900 sm:mb-8"
                   initial={{ y: 20, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                  About
+                  <span className="text-gray-800 text-7xl sm:text-6xl lg:text-8xl">
+                    B
+                  </span>
+                  logs...
                 </motion.h2>
-                <div className="flex-row flex gap-3">
-                  {!showFriendInput ? (
-                    <motion.button
-                      onClick={() => setShowFriendInput(true)}
-                      className="w-auto px-5 py-2 sm:px-10 sm:py-2 text-md sm:text-lg rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white font-medium shadow-xl hover:from-green-600 hover:to-green-700"
-                      whileHover={{
-                        scale: 1.05,
-                        boxShadow: "0 5px 15px rgba(0,0,0,0.2)",
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Add Friend
-                    </motion.button>
-                  ) : (
-                    <motion.div
-                      className="flex flex-row gap-2 items-center"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <input
-                        type="text"
-                        value={friendName}
-                        onChange={(e) => setFriendName(e.target.value)}
-                        placeholder="Friend's email"
-                        className="px-4 py-2 rounded-full border-2 border-green-500 focus:outline-none focus:border-green-600 text-sm sm:text-md"
-                        autoFocus
-                        onKeyPress={(e) => {
-                          if (e.key === "Enter") {
-                            handleAddFriend();
-                          }
-                        }}
-                      />
-                      <motion.button
-                        onClick={handleAddFriend}
-                        className="px-4 py-2 rounded-full bg-green-500 text-white hover:bg-green-600 text-sm sm:text-md"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Send
-                      </motion.button>
-                      <motion.button
-                        onClick={() => {
-                          setShowFriendInput(false);
-                          setFriendName("");
-                        }}
-                        className="px-4 py-2 rounded-full bg-gray-400 text-white hover:bg-gray-500 text-sm sm:text-md"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Cancel
-                      </motion.button>
-                    </motion.div>
-                  )}
-                  <motion.button
-                    onClick={() => navigate("/create")}
-                    className="w-auto px-5 py-2 sm:px-10 sm:py-2 text-md sm:text-lg rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white font-medium shadow-xl hover:from-red-600 hover:to-red-700"
-                    whileHover={{
-                      scale: 1.05,
-                      boxShadow: "0 5px 15px rgba(0,0,0,0.2)",
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    CREATE
-                  </motion.button>
-                </div>
-              </div>
-              <motion.p
-                className="text-sm lg:text-lg text-gray-700 leading-relaxed"
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                {author.about}
-              </motion.p>
-              <motion.p
-                className="mt-6 text-sm sm:text-lg text-gray-500 italic"
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                {author.email}
-              </motion.p>
-            </motion.div>
-          </motion.section>
 
-          {/* Stats Section */}
-          <motion.section
-            className="mt-16 sm:mt-20 lg:mt-24 w-5/6 mx-auto"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-          >
-            <div className="flex flex-col sm:flex-row gap-6">
-              {[
-                {
-                  label: "Total Likes",
-                  value: totalLikes,
-                  icon: "heart",
-                  gradient: "from-500 to-red-500",
-                },
-                {
-                  label: "Blog Posts",
-                  value: blogCount,
-                  icon: "blog",
-                  gradient: "from-500 to-indigo-500",
-                },
-              ].map(({ label, value, icon, gradient }, index) => (
-                <motion.div
-                  key={label}
-                  className={`w-full sm:w-1/2 bg-gradient-to-br ${gradient} rounded-2xl shadow-lg p-6 sm:p-8 transform transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl`}
-                  initial={{ y: 50, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2, duration: 0.6 }}
-                >
-                  <div className="flex flex-col items-center text-white">
-                    <motion.img
-                      src={`./../images/icons/${icon}.png`}
-                      alt={label}
-                      className="h-12 sm:h-14 lg:h-16 w-auto mb-4"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    />
-                    <motion.span
-                      className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2"
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.2 + 0.3, type: "spring" }}
-                    >
-                      {value}
-                    </motion.span>
-                    <span className="text-base sm:text-lg lg:text-xl font-medium text-white/90">
-                      {label}
-                    </span>
+                {/* Only the blog section shows the skeleton when loading */}
+                {loading ? (
+                  <div>
+                    <HimeSkeleton />
                   </div>
-                </motion.div>
-              ))}
+                ) : (
+                  <>
+                    <div className="mt-20 sm:mt-30 grid grid-cols-1 sm:grid-cols-2 space-y-10 sm:space-y-20 lg:grid-cols-3 gap-8">
+                      {blogs.length > 0 ? (
+                        blogs.map((blog, index) => (
+                          <motion.div
+                            key={blog.id}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            whileInView={{ scale: 1, opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: index * 0.1, duration: 0.5 }}
+                            whileHover={{
+                              scale: 1.03,
+                              transition: { duration: 0.2 },
+                            }}
+                            onClick={() => navigate(`/blog/${blog.id}`)}
+                            // className="mx-2"
+                          >
+                            <BlogCard
+                              image={blog.blogHead}
+                              title={blog.title}
+                              description={blog.description1}
+                              showActions={true}
+                              image_size="h-70"
+                              id={blog.id}
+                            />
+                          </motion.div>
+                        ))
+                      ) : (
+                        <motion.p
+                          className="col-span-full text-center text-xl text-gray-500 py-12"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.6 }}
+                        >
+                          No stories published yet
+                        </motion.p>
+                      )}
+                    </div>
+
+                    {/* Pagination Controls */}
+                    <div className="flex flex-row justify-center my-10 space-x-3">
+                      {Array.from({ length: totalPages }, (_, i) => (
+                        <button
+                          key={i + 1}
+                          onClick={() => handlePageChange(i + 1)}
+                          className={`w-10 h-10 text-lg rounded-full border ${
+                            currentPage === i + 1
+                              ? "bg-red-500 text-white"
+                              : "bg-white border-2"
+                          }`}
+                        >
+                          {i + 1}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </motion.section>
             </div>
-          </motion.section>
-          <hr className="h-1 rounded-full w-14/15 mx-auto bg-black my-8 sm:my-20 lg:my-24" />
-          {/* Blog Grid */}
-          <motion.section
-            ref={storiesRef}
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-          >
-            <motion.h2
-              className="text-6xl sm:text-6xl lg:text-8xl font-bold text-gray-900 sm:mb-8"
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
-            >
-              <span className="text-gray-800 text-7xl sm:text-6xl lg:text-8xl">
-                B
-              </span>
-              logs...
-            </motion.h2>
+          </motion.main>
 
-            {/* Only the blog section shows the skeleton when loading */}
-            {loading ? (
-              <div>
-                <HimeSkeleton />
-              </div>
-            ) : (
-              <>
-                <div className="mt-20 sm:mt-30 grid grid-cols-1 sm:grid-cols-2 space-y-10 sm:space-y-20 lg:grid-cols-3 gap-8">
-                  {blogs.length > 0 ? (
-                    blogs.map((blog, index) => (
-                      <motion.div
-                        key={blog.id}
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        whileInView={{ scale: 1, opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1, duration: 0.5 }}
-                        whileHover={{
-                          scale: 1.03,
-                          transition: { duration: 0.2 },
-                        }}
-                        onClick={() => navigate(`/blog/${blog.id}`)}
-                        // className="mx-2"
-                      >
-                        <BlogCard
-                          image={blog.blogHead}
-                          title={blog.title}
-                          description={blog.description1}
-                          showActions={true}
-                          image_size="h-70"
-                          id={blog.id}
-                        />
-                      </motion.div>
-                    ))
-                  ) : (
-                    <motion.p
-                      className="col-span-full text-center text-xl text-gray-500 py-12"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      No stories published yet
-                    </motion.p>
-                  )}
-                </div>
-
-                {/* Pagination Controls */}
-                <div className="flex flex-row justify-center my-10 space-x-3">
-                  {Array.from({ length: totalPages }, (_, i) => (
-                    <button
-                      key={i + 1}
-                      onClick={() => handlePageChange(i + 1)}
-                      className={`w-10 h-10 text-lg rounded-full border ${
-                        currentPage === i + 1
-                          ? "bg-red-500 text-white"
-                          : "bg-white border-2"
-                      }`}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
-          </motion.section>
+          <Footer color="bg-black" fontColor="text-white font-bold" />
         </div>
-      </motion.main>
-
-      <Footer color="bg-black" fontColor="text-white font-bold" />
+      </div>
     </AnimatePresence>
   );
 }
