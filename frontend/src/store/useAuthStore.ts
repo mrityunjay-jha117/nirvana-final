@@ -52,6 +52,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   socket: null,
 
   checkAuth: async () => {
+    const token = localStorage.getItem("chat_token");
+    if (!token) {
+      set({ authUser: null, isCheckingAuth: false });
+      return;
+    }
     try {
       const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
@@ -68,7 +73,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("chat_token", res.data.token);
       set({ authUser: res.data });
       get().connectSocket();
     } catch (error: any) {
@@ -81,8 +86,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   login: async (data: LoginData) => {
     set({ isLoggingIn: true });
     try {
-      const res = await axiosInstance.post("/auth/login", data);
-      localStorage.setItem("token", res.data.token);
+      const res = await axiosInstance.post("/auth/signin", data);
+      localStorage.setItem("chat_token", res.data.token);
       set({ authUser: res.data });
       get().connectSocket();
     } catch (error: any) {
@@ -94,8 +99,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   logout: async () => {
     try {
-      await axiosInstance.post("/auth/logout");
-      localStorage.removeItem("token");
+      // Backend is stateless token, no logout endpoint needed usually, but clearing client side
+      localStorage.removeItem("chat_token");
       set({ authUser: null });
       get().disconnectSocket();
     } catch (error: any) {

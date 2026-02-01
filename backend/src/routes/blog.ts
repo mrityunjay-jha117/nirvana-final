@@ -25,47 +25,8 @@ export const blogRouter = new Hono<{
 }>();
 
 // -----------------------------------------------------------------
-// JWT Authorization Middleware
+// Public Routes
 // -----------------------------------------------------------------
-// This middleware is applied to all subsequent routes defined below.
-// It does the following:
-//   1. Extracts the "Authorization" header.
-//   2. Removes the "Bearer " prefix if it exists.
-//   3. Verifies the JWT token using the secret from the environment variables.
-//   4. If verification is successful, it sets the "authorId" (from the token) into the context.
-//   5. If any step fails, it returns a 403 error response.
-blogRouter.use("/*", async (c, next) => {
-  // Retrieve the Authorization header from the request.
-  const authHeader = c.req.header("Authorization");
-  if (!authHeader) {
-    c.status(403);
-    return c.json({ message: "Authorization header missing" });
-  }
-  // Extract the token by removing the "Bearer " prefix if present.
-  const token = authHeader.startsWith("Bearer ")
-    ? authHeader.slice(7)
-    : authHeader;
-  try {
-    // Verify the JWT token using the secret from the environment variables.
-    const author = await verify(token, c.env.JWT_SECRET);
-    if (author && typeof author.id === "string") {
-      // Set the authenticated author's id into context, making it available to subsequent handlers.
-      c.set("authorId", author.id);
-      return next();
-    } else {
-      c.status(403);
-      return c.json({ message: "You are not logged in" });
-    }
-  } catch (err) {
-    c.status(403);
-    return c.json({ message: "Invalid token" });
-  }
-});
-
-// -----------------------------------------------------------------
-// Public Routes (with JWT Protection)
-// -----------------------------------------------------------------
-// All routes defined below require a valid JWT token.
 // GET /bulk
 // -----------------------------------------------------------------
 // Returns all blog posts along with their associated author and location data.
@@ -112,7 +73,7 @@ blogRouter.get("/paginated_bulk", async (c) => {
         location: true,
       },
       orderBy: {
-        id: "desc", // optional: newest first
+        id: "desc",
       },
     });
 
@@ -129,6 +90,44 @@ blogRouter.get("/paginated_bulk", async (c) => {
   } catch (error) {
     c.status(500);
     return c.json({ message: "Failed to fetch blogs", error: String(error) });
+  }
+});
+
+// -----------------------------------------------------------------
+// JWT Authorization Middleware
+// -----------------------------------------------------------------
+// This middleware is applied to all subsequent routes defined below.
+// It does the following:
+//   1. Extracts the "Authorization" header.
+//   2. Removes the "Bearer " prefix if it exists.
+//   3. Verifies the JWT token using the secret from the environment variables.
+//   4. If verification is successful, it sets the "authorId" (from the token) into the context.
+//   5. If any step fails, it returns a 403 error response.
+blogRouter.use("/*", async (c, next) => {
+  // Retrieve the Authorization header from the request.
+  const authHeader = c.req.header("Authorization");
+  if (!authHeader) {
+    c.status(403);
+    return c.json({ message: "Authorization header missing" });
+  }
+  // Extract the token by removing the "Bearer " prefix if present.
+  const token = authHeader.startsWith("Bearer ")
+    ? authHeader.slice(7)
+    : authHeader;
+  try {
+    // Verify the JWT token using the secret from the environment variables.
+    const author = await verify(token, c.env.JWT_SECRET);
+    if (author && typeof author.id === "string") {
+      // Set the authenticated author's id into context, making it available to subsequent handlers.
+      c.set("authorId", author.id);
+      return next();
+    } else {
+      c.status(403);
+      return c.json({ message: "You are not logged in" });
+    }
+  } catch (err) {
+    c.status(403);
+    return c.json({ message: "Invalid token" });
   }
 });
 
@@ -159,7 +158,7 @@ blogRouter.get("/search/author", async (c) => {
   } catch (error) {
     return c.json(
       { message: "Failed to search by author", error: String(error) },
-      500
+      500,
     );
   }
 });
@@ -189,7 +188,7 @@ blogRouter.get("/search/title", async (c) => {
   } catch (error) {
     return c.json(
       { message: "Failed to search by title", error: String(error) },
-      500
+      500,
     );
   }
 });
@@ -207,7 +206,7 @@ blogRouter.get("/search/location", async (c) => {
   if (!parsedQuery.success) {
     return c.json(
       { message: "Invalid query", errors: parsedQuery.error.errors },
-      400
+      400,
     );
   }
 
@@ -322,7 +321,7 @@ blogRouter.put("/:id", async (c) => {
   if (!parsedBody.success) {
     return c.json(
       { message: "Invalid data", errors: parsedBody.error.errors },
-      400
+      400,
     );
   }
 
@@ -483,7 +482,7 @@ blogRouter.post("/", async (c) => {
   if (!parsedBody.success) {
     return c.json(
       { message: "Invalid data", errors: parsedBody.error.errors },
-      400
+      400,
     );
   }
   // Ensure that the provided location exists; if not, create it.
@@ -501,15 +500,15 @@ blogRouter.post("/", async (c) => {
       country: body.country,
     },
   });
-console.log("Author ID from context:", authorId);
-const authorExists = await prisma.author.findUnique({
-  where: { id: authorId },
-});
+  console.log("Author ID from context:", authorId);
+  const authorExists = await prisma.author.findUnique({
+    where: { id: authorId },
+  });
 
-if (!authorExists) {
-  console.error("Author not found in DB for ID:", authorId);
-  return c.json({ message: "Author does not exist in DB" }, 404);
-}
+  if (!authorExists) {
+    console.error("Author not found in DB for ID:", authorId);
+    return c.json({ message: "Author does not exist in DB" }, 404);
+  }
 
   // Create the blog post, associating it with the authenticated author and the location.
   const post = await prisma.blog.create({

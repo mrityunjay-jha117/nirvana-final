@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import get_dev_backend from "../../../../store/get_backend_url";
 import HimeSkeleton from "../../../../skeletons/userpage_skeleton";
 interface CarouselProps {
   className?: string;
@@ -26,7 +27,7 @@ export default function Carousel({ className = "" }: CarouselProps) {
       const token = localStorage.getItem("jwt");
       try {
         const res = await fetch(
-          "https://backend.mrityunjay-jha2005.workers.dev/api/v1/blog/paginated_bulk?page=1",
+          `${get_dev_backend()}/blog/paginated_bulk?page=1`,
           {
             headers: {
               "Content-Type": "application/json",

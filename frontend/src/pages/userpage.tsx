@@ -7,7 +7,7 @@ import TypingEffect from "../components/primary_components/primary_components/un
 import BlogCard from "../components/primary_components/primary_components/cards/blog_card";
 import HimeSkeleton from "../skeletons/userpage_skeleton";
 import { axiosInstance } from "../lib/axios";
-
+import get_dev_backend from "../store/get_backend_url";
 interface Author {
   id: string;
   name: string;
@@ -98,14 +98,8 @@ export default function Hime() {
 
       try {
         const [userRes, statsRes] = await Promise.all([
-          fetch(
-            "https://backend.mrityunjay-jha2005.workers.dev/api/v1/user/me",
-            { headers },
-          ),
-          fetch(
-            "https://backend.mrityunjay-jha2005.workers.dev/api/v1/blog/stats",
-            { headers },
-          ),
+          fetch(`${get_dev_backend()}/user/me`, { headers }),
+          fetch(`${get_dev_backend()}/blog/stats`, { headers }),
         ]);
 
         const userData = await userRes.json();
@@ -144,7 +138,7 @@ export default function Hime() {
 
       try {
         const res = await fetch(
-          `https://backend.mrityunjay-jha2005.workers.dev/api/v1/user/author/${author.id}?page=${currentPage}`,
+          `${get_dev_backend()}/user/author/${author.id}?page=${currentPage}`,
           { headers },
         );
         const data = await res.json();

@@ -64,6 +64,12 @@ export function AppContent() {
   ];
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
 
+  const location = useLocation();
+  const hideChatButtonOnRoutes = ["/", "/window", "/chat"];
+  const shouldShowChatButton = !hideChatButtonOnRoutes.includes(
+    location.pathname,
+  );
+
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -74,11 +80,6 @@ export function AppContent() {
         <Loader className="size-10 animate-spin" />
       </div>
     );
-  const location = useLocation();
-  const hideChatButtonOnRoutes = ["/", "/window", "/chat"];
-  const shouldShowChatButton = !hideChatButtonOnRoutes.includes(
-    location.pathname
-  );
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
@@ -153,7 +154,12 @@ export function AppContent() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <AppContent />
     </BrowserRouter>
   );

@@ -6,6 +6,7 @@ import BlogCard from "../components/primary_components/primary_components/cards/
 import SideScroll from "../components/primary_components/dashboard/side_scroll";
 import HimeSkeleton from "../skeletons/userpage_skeleton"; // adjust path if needed
 import SideScrollindesk from "../components/primary_components/dashboard/side_scroll_in_desktop";
+import get_dev_backend from "../store/get_backend_url";
 
 const BlogPage: React.FC = () => {
   const [blogData, setBlogData] = useState<any[]>([]);
@@ -30,7 +31,7 @@ const BlogPage: React.FC = () => {
 
       try {
         const response = await fetch(
-          `https://backend.mrityunjay-jha2005.workers.dev/api/v1/blog/paginated_bulk?page=${currentPage}`,
+          `${get_dev_backend()}/blog/paginated_bulk?page=${currentPage}`,
           { headers },
         );
         if (response.ok) {

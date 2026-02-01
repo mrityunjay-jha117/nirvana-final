@@ -4,7 +4,7 @@ import {
   UpdateBlogInput,
 } from "@mrityunjay__jha117/reload_common";
 import { useNavigate, useParams } from "react-router-dom";
-
+import get_dev_backend from "../store/get_backend_url";
 export default function BlogUpdate() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
@@ -30,7 +30,7 @@ export default function BlogUpdate() {
     };
 
     setLoading(true);
-    fetch(`https://backend.mrityunjay-jha2005.workers.dev/api/v1/blog/${id}`, {
+    fetch(`${get_dev_backend()}/blog/${id}`, {
       method: "GET",
       headers,
     })
@@ -98,14 +98,11 @@ export default function BlogUpdate() {
       setIsSubmitting(true);
 
       try {
-        const res = await fetch(
-          `https://backend.mrityunjay-jha2005.workers.dev/api/v1/blog/${id}`,
-          {
-            method: "PUT",
-            headers,
-            body: JSON.stringify(parsed.data),
-          },
-        );
+        const res = await fetch(`${get_dev_backend()}/blog/${id}`, {
+          method: "PUT",
+          headers,
+          body: JSON.stringify(parsed.data),
+        });
 
         if (res.ok) {
           alert("Blog updated successfully!");

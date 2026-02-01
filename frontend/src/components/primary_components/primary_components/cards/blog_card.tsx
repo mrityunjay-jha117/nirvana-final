@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
+import get_dev_backend from "../../../../store/get_backend_url";
 interface DataCardProps {
   image: string;
   title: string;
@@ -26,16 +26,13 @@ export default function BlogCard({
 
     const token = localStorage.getItem("jwt");
     try {
-      const res = await fetch(
-        `https://backend.mrityunjay-jha2005.workers.dev/api/v1/blog/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`${get_dev_backend()}/blog/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) {
         const errorData = await res.json();
         console.error("Delete error:", errorData.message);

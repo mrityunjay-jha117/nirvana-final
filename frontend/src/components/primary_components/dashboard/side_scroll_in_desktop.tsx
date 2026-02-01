@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import get_dev_backend from "../../../store/get_backend_url";
 export default function SideScrollindesk() {
   const navigate = useNavigate();
   const sidebarRef = useRef<HTMLElement>(null);
@@ -38,8 +38,8 @@ export default function SideScrollindesk() {
 
     try {
       const response = await fetch(
-        `https://backend.mrityunjay-jha2005.workers.dev/api/v1/blog/search${endpoint}`,
-        { headers }
+        `${get_dev_backend()}/blog/search${endpoint}`,
+        { headers },
       );
 
       if (response.ok) {
@@ -142,7 +142,14 @@ export default function SideScrollindesk() {
         ))
       ) : (
         <div className="p-2 ">
-          {loading ? "" : <span className="lg:text-sm text-left">No blogs found. <br />Please try searching again.</span>}
+          {loading ? (
+            ""
+          ) : (
+            <span className="lg:text-sm text-left">
+              No blogs found. <br />
+              Please try searching again.
+            </span>
+          )}
         </div>
       )}
     </aside>

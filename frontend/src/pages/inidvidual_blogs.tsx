@@ -6,40 +6,12 @@ import ImageSlider from "../components/primary_components/primary_components/sli
 import Footer from "../components/primary_components/dashboard/footer";
 import Error404 from "./error/coming_soon";
 import HimeSkeleton from "../skeletons/userpage_skeleton"; // Import the skeleton component
-
+import get_dev_backend from "../store/get_backend_url";
 export default function Blogi() {
   const { id: blogId } = useParams();
   const [BLOG, setBlogs] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
-
-  // Inside your Blogi function component (below the `const [error, setError] = useState(false);`)
-  // const [likeMessage, setLikeMessage] = useState<string | null>(null);
-  // console.log(likeMessage);
-  // Add this function in Blogi
-  // const handleLike = async () => {
-  //   const token = localStorage.getItem("jwt");
-  //   try {
-  //     const response = await fetch(
-  //       `https://backend.mrityunjay-jha2005.workers.dev/api/v1/blog/like?blogId=${blogId}`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //         body: JSON.stringify({ blogId }),
-  //       }
-  //     );
-
-  //     const result = await response.json();
-  //     if (!response.ok) throw new Error(result.message || "Failed");
-
-  //     setLikeMessage("You liked this blog!");
-  //   } catch (err: any) {
-  //     setLikeMessage(err.message || "Error occurred");
-  //   }
-  // };
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -51,7 +23,7 @@ export default function Blogi() {
 
       try {
         const response = await fetch(
-          `https://backend.mrityunjay-jha2005.workers.dev/api/v1/blog/${blogId}`,
+          `${get_dev_backend()}/blog/${blogId}`,
           { headers },
         );
         if (!response.ok) {

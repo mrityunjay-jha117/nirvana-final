@@ -5,6 +5,7 @@ import {
 } from "@mrityunjay__jha117/reload_common";
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
+import get_dev_backend from "../store/get_backend_url";
 
 export default function Blog_creation() {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ export default function Blog_creation() {
     body.append("file", file);
 
     const res = await fetch(
-      "https://backend.mrityunjay-jha2005.workers.dev/api/v1/image/upload",
+      `${get_dev_backend()}/image/upload`,
       {
         method: "POST",
         body,
@@ -104,7 +105,7 @@ export default function Blog_creation() {
 
       try {
         const res = await fetch(
-          "https://backend.mrityunjay-jha2005.workers.dev/api/v1/blog",
+          `${get_dev_backend()}/blog`,
           {
             method: "POST",
             headers,

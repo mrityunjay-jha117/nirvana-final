@@ -11,6 +11,7 @@ import InputBox from "../components/primary_components/primary_components/unique
 import Button from "../components/primary_components/primary_components/unique_components/button";
 import ErrorMessage from "../components/primary_components/primary_components/unique_components/wrong_banner";
 import { useAuthStore } from "../store/useAuthStore";
+import get_dev_backend from "../store/get_backend_url";
 
 export default function Credentials() {
   const navigate = useNavigate();
@@ -47,13 +48,10 @@ export default function Credentials() {
     const body = new FormData();
     body.append("file", file);
 
-    const res = await fetch(
-      "https://backend.mrityunjay-jha2005.workers.dev/api/v1/image/upload",
-      {
-        method: "POST",
-        body,
-      },
-    );
+    const res = await fetch(`${get_dev_backend()}/image/upload`, {
+      method: "POST",
+      body,
+    });
     const data = await res.json();
     if (res.ok && data.url) {
       return data.url;
@@ -76,7 +74,8 @@ export default function Credentials() {
     maxFiles: 1,
   });
 
-  const handleSignupSubmit = async () => {
+  const handleSignupSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (isSigningUp || isLocalSignupLoading) return;
     const validation = signupSchema.safeParse(signupData);
     if (!validation.success) {
@@ -87,14 +86,11 @@ export default function Credentials() {
     }
     setIsLocalSignupLoading(true);
     try {
-      const res = await fetch(
-        "https://backend.mrityunjay-jha2005.workers.dev/api/v1/user/signup",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(validation.data),
-        },
-      );
+      const res = await fetch(`${get_dev_backend()}/user/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(validation.data),
+      });
       const data = await res.json();
 
       if (res.ok) {
@@ -117,7 +113,8 @@ export default function Credentials() {
     }
   };
 
-  const handleLoginSubmit = async () => {
+  const handleLoginSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (isLoggingIn || isLocalLoginLoading) return;
     const validation = signinSchema.safeParse(loginData);
     if (!validation.success) {
@@ -128,14 +125,11 @@ export default function Credentials() {
     }
     setIsLocalLoginLoading(true);
     try {
-      const res = await fetch(
-        "https://backend.mrityunjay-jha2005.workers.dev/api/v1/user/signin",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(validation.data),
-        },
-      );
+      const res = await fetch(`${get_dev_backend()}/user/signin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(validation.data),
+      });
       const data = await res.json();
 
       if (res.ok) {
@@ -189,7 +183,10 @@ export default function Credentials() {
         {/* Desktop Layout */}
         <div className="hidden md:flex relative flex-row lg:h-2/3 w-5/6 mx-auto rounded-xl overflow-hidden shadow-lg bg-white bg-opacity-90">
           {/* LOGIN Section */}
-          <div className="w-1/2 text-xs xl:text-sm font-medium flex flex-col items-center justify-center p-8">
+          <form
+            onSubmit={handleLoginSubmit}
+            className="w-1/2 text-xs xl:text-sm font-medium flex flex-col items-center justify-center p-8"
+          >
             <h2 className="font-bold  mb-3 text-2xl md:text-3xl  tracking-wide">
               LOGIN
             </h2>
@@ -243,10 +240,13 @@ export default function Credentials() {
                 Sign Up
               </span>
             </p>
-          </div>
+          </form>
 
           {/* SIGN UP Section */}
-          <div className="w-1/2  text-xs xl:text-sm font-medium  h-full flex flex-col items-center justify-center py-4">
+          <form
+            onSubmit={handleSignupSubmit}
+            className="w-1/2  text-xs xl:text-sm font-medium  h-full flex flex-col items-center justify-center py-4"
+          >
             <h2 className="font-bold  mb-3 text-2xl md:text-3xl  tracking-wide">
               SIGN UP
             </h2>
@@ -343,7 +343,7 @@ export default function Credentials() {
                 LOGIN
               </span>
             </p>
-          </div>
+          </form>
 
           {/* Overlay Section */}
           <div
@@ -403,7 +403,10 @@ export default function Credentials() {
         {/* Mobile Layout */}
         <div className="md:hidden w-full max-w-md p-4">
           {isSignUp ? (
-            <div className="flex flex-col items-center justify-center bg-white p-8 rounded-xl shadow-lg bg-opacity-90 tracking-wide">
+            <form
+              onSubmit={handleSignupSubmit}
+              className="flex flex-col items-center justify-center bg-white p-8 rounded-xl shadow-lg bg-opacity-90 tracking-wide"
+            >
               <h2 className="font-bold text-2xl sm:text-3xl mb-3 tracking-widest">
                 SIGN UP
               </h2>
@@ -481,9 +484,12 @@ export default function Credentials() {
                   LOGIN
                 </span>
               </p>
-            </div>
+            </form>
           ) : (
-            <div className="w-5/6 h-full mx-auto flex flex-col items-center justify-center bg-white p-4 rounded-xl shadow-xl bg-opacity-90 tracking-wide">
+            <form
+              onSubmit={handleLoginSubmit}
+              className="w-5/6 h-full mx-auto flex flex-col items-center justify-center bg-white p-4 rounded-xl shadow-xl bg-opacity-90 tracking-wide"
+            >
               <h2 className="font-bold text-2xl sm:text-3xl tracking-widest">
                 LOGIN
               </h2>
@@ -524,7 +530,7 @@ export default function Credentials() {
                   Sign Up
                 </span>
               </p>
-            </div>
+            </form>
           )}
         </div>
       </div>

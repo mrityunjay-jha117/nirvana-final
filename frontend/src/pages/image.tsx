@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-
+import get_dev_backend from "../store/get_backend_url";
 // Define the image types you are handling
 type ImageType = "blogHead";
 
@@ -15,7 +15,7 @@ async function uploadImage(file: File): Promise<string> {
   body.append("file", file);
 
   const res = await fetch(
-    "https://backend.mrityunjay-jha2005.workers.dev/api/v1/image/upload",
+    `${get_dev_backend()}/image/upload`,
     {
       method: "POST",
       body,

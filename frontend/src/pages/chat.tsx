@@ -1,4 +1,5 @@
 import { motion, useInView } from "framer-motion";
+import get_dev_backend from "../store/get_backend_url";
 import { useEffect, useRef, useState } from "react";
 type Message = { text: string; isBot: boolean; loading?: boolean };
 
@@ -12,7 +13,7 @@ export default function Chat() {
     const fetchMessages = async () => {
       try {
         const res = await fetch(
-          "https://backend.mrityunjay-jha2005.workers.dev/api/v1/message/chat/all",
+          `${get_dev_backend()}/message/chat/all`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -62,7 +63,7 @@ export default function Chat() {
 
       // Step 1: Save user message
       await fetch(
-        "https://backend.mrityunjay-jha2005.workers.dev/api/v1/message/chat/add",
+        `${get_dev_backend()}/message/chat/add`,
         {
           method: "POST",
           headers: {
@@ -75,7 +76,7 @@ export default function Chat() {
 
       // Step 2: Call Gemini API with the user prompt
       const geminiRes = await fetch(
-        `https://backend.mrityunjay-jha2005.workers.dev/api/v1/gemini/generate`, // your Gemini proxy route
+        `${get_dev_backend()}/gemini/generate`, // your Gemini proxy route
         {
           method: "POST",
           headers: {
@@ -91,7 +92,7 @@ export default function Chat() {
 
       // Step 3: Save Gemini bot response
       await fetch(
-        "https://backend.mrityunjay-jha2005.workers.dev/api/v1/message/chat/add",
+        `${get_dev_backend()}/message/chat/add`,
         {
           method: "POST",
           headers: {

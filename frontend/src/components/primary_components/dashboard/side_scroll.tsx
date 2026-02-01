@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import get_dev_backend from "../../../store/get_backend_url";
 export default function SideScroll() {
   const navigate = useNavigate();
 
@@ -41,10 +41,9 @@ export default function SideScroll() {
         break;
     }
     try {
-      const res = await fetch(
-        `https://backend.mrityunjay-jha2005.workers.dev/api/v1/blog/search${endpoint}`,
-        { headers }
-      );
+      const res = await fetch(`${get_dev_backend()}/blog/search${endpoint}`, {
+        headers,
+      });
       if (res.ok) {
         const data = await res.json();
         setBlogs(data.blogs || []);
@@ -107,7 +106,10 @@ export default function SideScroll() {
         `}
       >
         {/* Search Form */}
-        <form onSubmit={handleSearch} className="flex flex-col w-19/20 mx-auto gap-2 mt-2 mb-4">
+        <form
+          onSubmit={handleSearch}
+          className="flex flex-col w-19/20 mx-auto gap-2 mt-2 mb-4"
+        >
           <input
             type="text"
             value={searchQuery}
